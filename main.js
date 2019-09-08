@@ -11,11 +11,20 @@ var level = 0;
 var enemies = [];
 var bombs = [];
 var player = new Player(1, 1); //creates the player's object
+/*
+------------Grid Codes----------------
+0 - Free
+1 - Player
+2 - Indestructible wall
+3 - Destructible wall
+4 - Enemies
+5 - Bombs
+6 - Power-ups
+*/
 //build grid
 for (var i = 0; i < numRows; i++) {
     grid[i] = [];
 }
-
 for (var i = 0; i < numRows; i++) {
     for (var j = 0; j < numColumns; j++) {
         coordinates = {
@@ -27,22 +36,23 @@ for (var i = 0; i < numRows; i++) {
     }
 }
 for (var j = 0; j < numColumns; j++) {
-    grid[numRows - 1][j].layer = 1;
-    grid[0][j].layer = 1;
+    grid[numRows - 1][j].layer = 2;
+    grid[0][j].layer = 2;
 }
 for (var i = 0; i < numRows; i++) {
-    grid[i][numColumns - 1].layer = 1;
-    grid[i][0].layer = 1;
+    grid[i][numColumns - 1].layer = 2;
+    grid[i][0].layer = 2;
 }
 //creates enemies
 for (var i = 0; i < 2; i++) {
     enemies.push(new Enemy(parseInt(Math.random() * numRows), parseInt(Math.random() * numColumns)));
 }
 
+//Grid Functions
 function drawGrid() {
     for (var i = 0; i < numRows; i++) {
         for (var j = 0; j < numColumns; j++) {
-            if (grid[i][j].layer == 1) {
+            if (grid[i][j].layer >= 1) {
                 ctx.fillStyle = "blue";
                 ctx.fillRect(grid[i][j].x, grid[i][j].y, 32, 32);
                 ctx.strokeStyle = "gray";
@@ -57,7 +67,7 @@ function drawGrid() {
     }
 }
 
-//functions
+//general functions
 function clearCanvas() {
     //clear the canvas
     ctx.fillStyle = "green";
@@ -70,7 +80,6 @@ function clearCanvas() {
     ctx.strokeRect(0, 482, canvas.width, canvas.height - 482);
     ctx.lineWidth = 1;
 }
-
 function moveObjects() {
     player.move(dt, numRows, numColumns, grid);
     for (var i = 0; i < enemies.length; i++) {
@@ -100,7 +109,6 @@ function loop(t) {
             enemies[i].checkCollision(grid, numRows, numColumns);
         }
         drawObjects();
-
         prevTime = t;
     }
     requestAnimationFrame(loop);

@@ -5,12 +5,12 @@ function Enemy(row0, column0) {
     this.posRow0 = row0;
     this.w = 32;
     this.h = 32;
-    this.boxColliderW = 32;
-    this.boxColliderH = 32;
+    this.boposColumnColliderW = 32;
+    this.boposColumnColliderH = 32;
     this.vColumn = 1;
     this.vRow = 1;
     this.movingDir = "none";
-    this.color = "yellow";
+    this.color = "pink";
     this.strokeColor = "black";
     this.score = 0;
     this.movespeed = 1;
@@ -40,50 +40,46 @@ Enemy.prototype.move = function (dt, numRows, numColumns, grid) {
     }
 }
 Enemy.prototype.checkCollision = function (grid, numRows, numColumns) {
-    if (grid[this.posRow][this.posColumn].layer > 0) {
-        if (this.vx > 0) {
+    if (grid[this.posRow][this.posColumn].layer > 2) {
+        if (this.vColumn > 0) {
             this.posColumn = this.posColumn - 1;
-            this.vx = -this.vx;
-            this.x = this.x - 1;
+            this.vColumn = -this.vColumn;
         }
-        else if (this.vx < 0) {
+        else if (this.vColumn < 0) {
             this.posColumn = this.posColumn + 1;
-            this.vx = -this.vx;
-            this.x = this.x + 1;
+            this.vColumn = -this.vColumn;
 
         }
-        else if (this.vy < 0) {
+        else if (this.vRow < 0) {
             this.posRow = this.posRow + 1;
-            this.vy = -this.vy;
-            this.y = this.y + 1;
+            this.vRow = -this.vRow;
 
         }
-        else if (this.vy > 0) {
+        else if (this.vRow > 0) {
             this.posRow = this.posRow - 1;
-            this.vy = -this.vy;
-            this.y = this.y - 1;
+            this.vRow = -this.vRow;
         }
     }
 }
 Enemy.prototype.reset = function () {
     //restore the variables to their default value
-    this.posColumn = this.x0;
-    this.posRow = this.y0;
+    this.posColumn = this.posColumn0;
+    this.posRow = this.posColumn0;
     this.vColumn = 0;
     this.vRow = 0;
     this.lifes = 3;
     this.score = 0;
-    this.maxBombs = 1;
+    this.maposColumnBombs = 1;
 }
 
-Enemy.prototype.draw = function (ctx, grid) {
-    ctx.fillStyle = this.color;
-    ctx.fillRect(grid[this.posRow][this.posColumn].x, grid[this.posRow][this.posColumn].y, this.w, this.h);
+Enemy.prototype.draw = function (ctposColumn, grid) {
+    ctposColumn.fillStyle = this.color;
+    ctposColumn.fillRect(grid[this.posRow][this.posColumn].x, grid[this.posRow][this.posColumn].y, this.w, this.h);
     /*
-    ctx.save();
-    ctx.translate(this.posColumn * 32, this.posRow * 32);
-    ctx.fillStyle = this.color;
-    ctx.fillRect(-this.w / 2, -this.h / 2, this.w, this.h);
-    ctx.restore();
+    ctposColumn.save();
+    ctposColumn.translate(this.posColumn * 32, this.posRow * 32);
+    ctposColumn.fillStposColumnle = this.color;
+    ctposColumn.fillRect(-this.w / 2, -this.h / 2, this.w, this.h);
+    ctposColumn.restore();
     */
 }

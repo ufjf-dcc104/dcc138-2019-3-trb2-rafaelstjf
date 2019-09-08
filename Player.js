@@ -19,6 +19,7 @@ function Player(row0, column0) {
 }
 
 Player.prototype.move = function (dt, numRows, numColumns, grid) {
+    grid[this.posRow][this.posColumn].layer = 0;
     if (this.posColumn + this.vColumn >= 0 && this.posColumn + this.vColumn < numColumns) {
         if (this.vColumn > 0)
             this.movingDir = "right";
@@ -35,9 +36,11 @@ Player.prototype.move = function (dt, numRows, numColumns, grid) {
         this.posRow = this.posRow + this.vRow;
         this.vRow = 0;
     }
+    if (grid[this.posRow][this.posColumn].layer == 0)
+        grid[this.posRow][this.posColumn].layer = 1;
 }
 Player.prototype.checkCollision = function (grid, numRows, numColumns) {
-    if (grid[this.posRow][this.posColumn].layer > 0) {
+    if (grid[this.posRow][this.posColumn].layer > 1) {
         console.log(this.posRow, this.posRow);
         if (this.movingDir == "right")
             this.posColumn = this.posColumn - 1;
