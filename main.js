@@ -9,12 +9,13 @@ var numRows = 480 / 32;
 var highScore = 0;
 var level = 0;
 var enemies = [];
-var player = new Player(0, 0); //creates the player's object
-
+var bombs = [];
+var player = new Player(1, 1); //creates the player's object
 //build grid
 for (var i = 0; i < numRows; i++) {
     grid[i] = [];
 }
+
 for (var i = 0; i < numRows; i++) {
     for (var j = 0; j < numColumns; j++) {
         coordinates = {
@@ -25,35 +26,37 @@ for (var i = 0; i < numRows; i++) {
         grid[i][j] = coordinates;
     }
 }
-
-grid[1][1].layer = 1;
-grid[1][2].layer = 1;
-grid[1][3].layer = 1;
-grid[1][4].layer = 1;
-grid[1][5].layer = 1;
-grid[1][6].layer = 1;
-grid[1][7].layer = 1;
-grid[1][8].layer = 1;
-grid[1][9].layer = 1;
-grid[2][9].layer = 1;
-grid[1][11].layer = 1;
-grid[2][11].layer = 1;
+for (var j = 0; j < numColumns; j++) {
+    grid[numRows - 1][j].layer = 1;
+    grid[0][j].layer = 1;
+}
+for (var i = 0; i < numRows; i++) {
+    grid[i][numColumns - 1].layer = 1;
+    grid[i][0].layer = 1;
+}
+//creates enemies
+for (var i = 0; i < 2; i++) {
+    enemies.push(new Enemy(parseInt(Math.random() * numRows), parseInt(Math.random() * numColumns)));
+}
 
 function drawGrid() {
     for (var i = 0; i < numRows; i++) {
         for (var j = 0; j < numColumns; j++) {
             if (grid[i][j].layer == 1) {
-                ctx.fillStyle = "black";
+                ctx.fillStyle = "blue";
                 ctx.fillRect(grid[i][j].x, grid[i][j].y, 32, 32);
-                ctx.strokeStyle = "white";
+                ctx.strokeStyle = "gray";
+                ctx.strokeRect(grid[i][j].x, grid[i][j].y, 32, 32);
+            } else {
+
+                ctx.strokeStyle = "black";
                 ctx.strokeRect(grid[i][j].x, grid[i][j].y, 32, 32);
             }
-            ctx.strokeStyle = "black";
-            ctx.strokeRect(grid[i][j].x, grid[i][j].y, 32, 32);
 
         }
     }
 }
+
 //functions
 function clearCanvas() {
     //clear the canvas
@@ -70,6 +73,22 @@ function clearCanvas() {
 
 function moveObjects() {
     player.move(dt, numRows, numColumns, grid);
+    for (var i = 0; i < enemies.length; i++) {
+        enemies[i].move(dt, numRows, numColumns, grid);
+    }
+    for (var i = 0; i < bombs.length; i++) {
+        bombs[i].behave(dt);
+    }
+}
+function drawObjects() {
+    drawGrid();
+    for (var i = 0; i < enemies.length; i++) {
+        enemies[i].draw(ctx, grid);
+    }
+    for (var i = 0; i < bombs.length; i++) {
+        bombs[i].draw(ctx, grid);
+    }
+    player.draw(ctx, grid);
 }
 function loop(t) {
     clearCanvas();
@@ -77,8 +96,11 @@ function loop(t) {
         dt = (t - prevTime) / 1000;
         moveObjects() //move them first and then check collisions
         player.checkCollision(grid, numRows, numColumns);
-        drawGrid();
-        player.draw(ctx, grid);
+        for (var i = 0; i < enemies.length; i++) {
+            enemies[i].checkCollision(grid, numRows, numColumns);
+        }
+        drawObjects();
+
         prevTime = t;
     }
     requestAnimationFrame(loop);
@@ -106,6 +128,9 @@ addEventListener("keydown", function (e) {
 addEventListener("keyup", function (e) {
     switch (e.keyCode) {
         case 32: //space key
+            if (bombs.length < player.maxBombs) {
+                bombs.push(new Bomb(player.posRow, player.posColumn));
+            }
             break;
         case 37: //left arrow key
             player.vColumn = 0;

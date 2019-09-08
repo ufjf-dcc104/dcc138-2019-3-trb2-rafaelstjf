@@ -15,6 +15,7 @@ function Player(row0, column0) {
     this.immunity = false;
     this.lifes = 3;
     this.score = 0;
+    this.maxBombs = 1;
 }
 
 Player.prototype.move = function (dt, numRows, numColumns, grid) {
@@ -50,16 +51,6 @@ Player.prototype.checkCollision = function (grid, numRows, numColumns) {
         console.log(this.posRow, this.posRow);
     }
 }
-/*
-Player.prototype.collideWith = function (target) {
-    //Basic box collider
-    if (target.x + target.boxColliderW < this.posColumn - this.boxColliderW / 2) return false;
-    if (target.x - target.boxColliderW / 2 > this.posColumn + this.boxColliderW) return false;
-    if (target.y + target.boxColliderH < this.posRow - this.boxColliderH / 2) return false;
-    if (target.y - target.boxColliderH / 2 > this.posRow + this.boxColliderH) return false;
-    return true;
-}
-*/
 Player.prototype.reset = function () {
     //restore the variables to their default value
     this.posColumn = this.x0;
@@ -68,6 +59,7 @@ Player.prototype.reset = function () {
     this.vRow = 0;
     this.lifes = 3;
     this.score = 0;
+    this.maxBombs = 1;
 }
 
 Player.prototype.draw = function (ctx, grid) {
