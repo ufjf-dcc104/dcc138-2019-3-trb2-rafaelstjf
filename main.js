@@ -62,7 +62,6 @@ function drawGrid() {
                 ctx.strokeStyle = "black";
                 ctx.strokeRect(grid[i][j].x, grid[i][j].y, 32, 32);
             }
-
         }
     }
 }

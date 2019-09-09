@@ -5,8 +5,8 @@ function Enemy(row0, column0) {
     this.posRow0 = row0;
     this.w = 32;
     this.h = 32;
-    this.boposColumnColliderW = 32;
-    this.boposColumnColliderH = 32;
+    this.boxColumnColliderW = 32;
+    this.boxColumnColliderH = 32;
     this.vColumn = 1;
     this.vRow = 1;
     this.movingDir = "none";
@@ -18,7 +18,8 @@ function Enemy(row0, column0) {
 }
 
 Enemy.prototype.move = function (dt, numRows, numColumns, grid) {
-
+    //frees the current position
+    grid[this.posRow][this.posColumn].layer = 0;
     if (this.lastMoved < this.movespeed) {
         this.lastMoved = this.lastMoved + dt;
     } else {
@@ -38,9 +39,13 @@ Enemy.prototype.move = function (dt, numRows, numColumns, grid) {
             this.posRow = this.posRow + this.vRow;
         }
     }
+    //sets the next position
+    if (grid[this.posRow][this.posColumn].layer == 0) {
+        grid[this.posRow][this.posColumn].layer = 4;
+    }
 }
 Enemy.prototype.checkCollision = function (grid, numRows, numColumns) {
-    if (grid[this.posRow][this.posColumn].layer > 2) {
+    if (grid[this.posRow][this.posColumn].layer >= 2 && grid[this.posRow][this.posColumn].layer <= 3) {
         if (this.vColumn > 0) {
             this.posColumn = this.posColumn - 1;
             this.vColumn = -this.vColumn;
@@ -50,7 +55,7 @@ Enemy.prototype.checkCollision = function (grid, numRows, numColumns) {
             this.vColumn = -this.vColumn;
 
         }
-        else if (this.vRow < 0) {
+        if (this.vRow < 0) {
             this.posRow = this.posRow + 1;
             this.vRow = -this.vRow;
 

@@ -13,11 +13,11 @@ function Player(row0, column0) {
     this.color = "red";
     this.strokeColor = "black";
     this.immunity = false;
+    this.lastImunity = 0;
     this.lifes = 3;
     this.score = 0;
     this.maxBombs = 1;
 }
-
 Player.prototype.move = function (dt, numRows, numColumns, grid) {
     grid[this.posRow][this.posColumn].layer = 0;
     if (this.posColumn + this.vColumn >= 0 && this.posColumn + this.vColumn < numColumns) {
@@ -38,9 +38,18 @@ Player.prototype.move = function (dt, numRows, numColumns, grid) {
     }
     if (grid[this.posRow][this.posColumn].layer == 0)
         grid[this.posRow][this.posColumn].layer = 1;
+    //updates the imunity
+    if (this.immunity) {
+        if (this.lastImunity >= 3) {
+            this.lastImunity = 0;
+            this.immunity = false;
+        } else {
+            this.lastImunity = this.lastImunity + dt;
+        }
+    }
 }
 Player.prototype.checkCollision = function (grid, numRows, numColumns) {
-    if (grid[this.posRow][this.posColumn].layer > 1) {
+    if (grid[this.posRow][this.posColumn].layer >= 2 && grid[this.posRow][this.posColumn].layer <= 3) { //wall
         console.log(this.posRow, this.posRow);
         if (this.movingDir == "right")
             this.posColumn = this.posColumn - 1;
@@ -52,6 +61,10 @@ Player.prototype.checkCollision = function (grid, numRows, numColumns) {
             this.posRow = this.posRow - 1;
         this.movingDir = "none";
         console.log(this.posRow, this.posRow);
+    }
+    if (grid[this.posRow][this.posColumn].layer == 4 && !this.immunity) {//enemy
+        this.immunity = true;
+        this.lifes--;
     }
 }
 Player.prototype.reset = function () {
@@ -67,6 +80,8 @@ Player.prototype.reset = function () {
 
 Player.prototype.draw = function (ctx, grid) {
     ctx.fillStyle = this.color;
+    if(this.immunity)
+    ctx.fillStyle = "white";
     ctx.fillRect(grid[this.posRow][this.posColumn].x, grid[this.posRow][this.posColumn].y, this.w, this.h);
     /*
     ctx.save();
