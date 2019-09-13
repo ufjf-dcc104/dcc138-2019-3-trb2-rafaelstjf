@@ -2,6 +2,8 @@ function Player(row0, column0) {
     this.posColumn = column0;
     this.posRow = row0;
     this.posColumn0 = column0;
+    this.x = column0 * 32;
+    this.y = row0 * 32;
     this.posRow0 = row0;
     this.w = 32;
     this.h = 32;
@@ -16,26 +18,51 @@ function Player(row0, column0) {
     this.lastImunity = 0;
     this.lifes = 3;
     this.score = 0;
-    this.maxBombs = 1;
+    this.maxBombs = 2;
+}
+Player.prototype.calcPos = function () {
+
+
 }
 Player.prototype.move = function (dt, numRows, numColumns, grid) {
+    /*
+       * Calculates the position on the grid based in the player's X and Y values
+       */
+    var r1 = (this.y + this.vRow) % 32;
+    var r2 = (this.x + this.vColumn) % 32;
+    var newPosRow;
+    var newPosColumn;
+    if (r1 >= this.h / 2)
+        newPosRow = Math.ceil((this.y + this.vRow) / 32);
+    else
+        newPosRow = Math.floor((this.y + this.vRow) / 32);
+    if (r2 >= this.w / 2)
+        newPosColumn = Math.ceil((this.x + this.vColumn) / 32);
+    else
+        newPosColumn = Math.floor((this.x + this.vColumn) / 32);
+    /*
+    * First it frees the current position in the grid and then sets the new one
+    */
     grid[this.posRow][this.posColumn].layer = 0;
-    if (this.posColumn + this.vColumn >= 0 && this.posColumn + this.vColumn < numColumns) {
+    if (newPosColumn >= 0 && newPosColumn < numColumns) {
         if (this.vColumn > 0)
             this.movingDir = "right";
         else if (this.vColumn < 0)
             this.movingDir = "left";
-        this.posColumn = this.posColumn + this.vColumn
+        this.x = this.x + this.vColumn
         this.vColumn = 0;
+        this.posColumn = newPosColumn;
     }
-    if (this.posRow + this.vRow >= 0 && this.posRow + this.vRow < numRows) {
+    if (newPosRow >= 0 && newPosRow < numRows) {
         if (this.vRow < 0)
             this.movingDir = "up";
         else if (this.vRow > 0)
             this.movingDir = "down";
-        this.posRow = this.posRow + this.vRow;
+        this.y = this.y + this.vRow;
         this.vRow = 0;
+        this.posRow = newPosRow;
     }
+    //console.log(this.posRow, this.posColumn);
     if (grid[this.posRow][this.posColumn].layer == 0)
         grid[this.posRow][this.posColumn].layer = 1;
     //updates the imunity
@@ -52,17 +79,17 @@ Player.prototype.checkCollision = function (grid, numRows, numColumns) {
     if (grid[this.posRow][this.posColumn].layer >= 2 && grid[this.posRow][this.posColumn].layer <= 3) { //wall
         console.log(this.posRow, this.posRow);
         if (this.movingDir == "right")
-            this.posColumn = this.posColumn - 1;
+            this.x = this.x - 16;
         else if (this.movingDir == "left")
-            this.posColumn = this.posColumn + 1;
+            this.x = this.x + 16;
         else if (this.movingDir == "up")
-            this.posRow = this.posRow + 1;
+            this.y = this.y + 16;
         else if (this.movingDir == "down")
-            this.posRow = this.posRow - 1;
+            this.y = this.y - 16;
         this.movingDir = "none";
         console.log(this.posRow, this.posRow);
     }
-    if (grid[this.posRow][this.posColumn].layer == 4 && !this.immunity) {//enemy
+    if ((grid[this.posRow][this.posColumn].layer == 4 || grid[this.posRow][this.posColumn].layer == 6) && !this.immunity) {//enemy
         this.immunity = true;
         this.lifes--;
     }
@@ -80,9 +107,9 @@ Player.prototype.reset = function () {
 
 Player.prototype.draw = function (ctx, grid) {
     ctx.fillStyle = this.color;
-    if(this.immunity)
-    ctx.fillStyle = "white";
-    ctx.fillRect(grid[this.posRow][this.posColumn].x, grid[this.posRow][this.posColumn].y, this.w, this.h);
+    if (this.immunity)
+        ctx.fillStyle = "white";
+    ctx.fillRect(this.x, this.y, this.w, this.h);
     /*
     ctx.save();
     ctx.translate(this.posColumn * 32, this.posRow * 32);

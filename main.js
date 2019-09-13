@@ -19,7 +19,8 @@ var player = new Player(1, 1); //creates the player's object
 3 - Destructible wall
 4 - Enemies
 5 - Bombs
-6 - Power-ups
+6 - Bomb activated
+7 - Power-ups
 */
 //build grid
 for (var i = 0; i < numRows; i++) {
@@ -85,7 +86,10 @@ function moveObjects() {
         enemies[i].move(dt, numRows, numColumns, grid);
     }
     for (var i = 0; i < bombs.length; i++) {
-        bombs[i].behave(dt);
+        bombs[i].behave(dt, grid, numRows, numColumns);
+        if (bombs[i].explosionDone) {
+            bombs.splice(i, 1);
+        }
     }
 }
 function drawObjects() {
@@ -94,19 +98,29 @@ function drawObjects() {
         enemies[i].draw(ctx, grid);
     }
     for (var i = 0; i < bombs.length; i++) {
-        bombs[i].draw(ctx, grid);
+        bombs[i].draw(ctx, grid, numRows, numColumns);
     }
     player.draw(ctx, grid);
+}
+function checkCollisionObjects() {
+    player.checkCollision(grid, numRows, numColumns);
+    for (var i = 0; i < enemies.length; i++) {
+        enemies[i].checkCollision(grid, numRows, numColumns);
+        if (!enemies[i].alive)
+            enemies.splice(i, 1);
+    }
+    for (var i = 0; i < bombs.length; i++) {
+        if (bombs[i].explosionDone) {
+            bombs.splice(i, 1);
+        }
+    }
 }
 function loop(t) {
     clearCanvas();
     if (inGame == true) {
         dt = (t - prevTime) / 1000;
         moveObjects() //move them first and then check collisions
-        player.checkCollision(grid, numRows, numColumns);
-        for (var i = 0; i < enemies.length; i++) {
-            enemies[i].checkCollision(grid, numRows, numColumns);
-        }
+        checkCollisionObjects();
         drawObjects();
         prevTime = t;
     }
@@ -116,21 +130,32 @@ function loop(t) {
 requestAnimationFrame(loop);
 
 addEventListener("keydown", function (e) {
+
+    if (e.keyCode == 37)
+        player.vColumn = -3;
+    if (e.keyCode == 38)
+        player.vRow = -3;
+    if (e.keyCode == 39)
+        player.vColumn = 3;
+    if (e.keyCode == 40)
+        player.vRow = 3;
+    /*
     switch (e.keyCode) {
         case 37: //left arrow key
-            player.vColumn = -1;
+            player.vColumn = -3;
             break;
         case 38: //up arrow key
-            player.vRow = -1;
+            player.vRow = -3;
             break;
         case 39: //right arrow key
-            player.vColumn = 1;
+            player.vColumn = 3;
             break;
         case 40: //down arrow key
-            player.vRow = 1;
+            player.vRow = 3;
             break;
         default:
     }
+    */
 });
 addEventListener("keyup", function (e) {
     switch (e.keyCode) {

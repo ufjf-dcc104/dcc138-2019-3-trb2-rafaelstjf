@@ -15,6 +15,7 @@ function Enemy(row0, column0) {
     this.score = 0;
     this.movespeed = 1;
     this.lastMoved = 0;
+    this.alive = true;
 }
 
 Enemy.prototype.move = function (dt, numRows, numColumns, grid) {
@@ -45,7 +46,7 @@ Enemy.prototype.move = function (dt, numRows, numColumns, grid) {
     }
 }
 Enemy.prototype.checkCollision = function (grid, numRows, numColumns) {
-    if (grid[this.posRow][this.posColumn].layer >= 2 && grid[this.posRow][this.posColumn].layer <= 3) {
+    if ((grid[this.posRow][this.posColumn].layer >= 2 && grid[this.posRow][this.posColumn].layer <= 3) || (grid[this.posRow][this.posColumn].layer == 5)) {
         if (this.vColumn > 0) {
             this.posColumn = this.posColumn - 1;
             this.vColumn = -this.vColumn;
@@ -64,6 +65,8 @@ Enemy.prototype.checkCollision = function (grid, numRows, numColumns) {
             this.posRow = this.posRow - 1;
             this.vRow = -this.vRow;
         }
+    } if (grid[this.posRow][this.posColumn].layer == 6) {
+        this.alive = false;
     }
 }
 Enemy.prototype.reset = function () {
