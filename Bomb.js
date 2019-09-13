@@ -19,13 +19,13 @@ Bomb.prototype.behave = function (dt, grid, numRows, numColumns) {
         if (this.currentTick >= this.maxTick && !this.readyToExplode) {
             this.readyToExplode = true;
             for (var i = 0; i < 3; i++) {
-                if (this.posRow + i < numRows)
+                if (this.posRow + i < numRows && this.posRow + i >= 0)
                     grid[this.posRow + i][this.posColumn].layer = 6;
-                if (this.posRow - i < numRows)
+                if (this.posRow - i < numRows && this.posRow - i >= 0)
                     grid[this.posRow - i][this.posColumn].layer = 6;
-                if (this.posColumn - i < numColumns)
+                if (this.posColumn - i < numRows && this.posColumn - i >= 0)
                     grid[this.posRow][this.posColumn - i].layer = 6;
-                if (this.posColumn + i < numColumns)
+                if (this.posColumn + i < numRows && this.posColumn + i >= 0)
                     grid[this.posRow][this.posColumn + i].layer = 6;
             }
             this.currentTick = 0;
@@ -40,13 +40,13 @@ Bomb.prototype.behave = function (dt, grid, numRows, numColumns) {
             this.readyToExplode = false;
             this.explosionDone = true;
             for (var i = 0; i < 3; i++) {
-                if (this.posRow + i < numRows)
+                if (this.posRow + i < numRows && this.posRow + i >= 0)
                     grid[this.posRow + i][this.posColumn].layer = 0;
-                if (this.posRow - i < numRows)
+                if (this.posRow - i < numRows && this.posRow - i >= 0)
                     grid[this.posRow - i][this.posColumn].layer = 0;
-                if (this.posColumn - i < numColumns)
+                if (this.posColumn - i < numRows && this.posColumn - i >= 0)
                     grid[this.posRow][this.posColumn - i].layer = 0;
-                if (this.posColumn + i < numColumns)
+                if (this.posColumn + i < numRows && this.posColumn + i >= 0)
                     grid[this.posRow][this.posColumn + i].layer = 0;
             }
         }
@@ -58,13 +58,13 @@ Bomb.prototype.draw = function (ctx, grid, numRows, numColumns) {
     ctx.fillRect(grid[this.posRow][this.posColumn].x, grid[this.posRow][this.posColumn].y, this.w, this.h);
     if (this.readyToExplode) {
         for (var i = 0; i < 3; i++) {
-            if (this.posRow + i < numRows)
+            if (this.posRow + i < numRows && this.posRow + i >= 0)
                 ctx.fillRect(grid[this.posRow + i][this.posColumn].x, grid[this.posRow + i][this.posColumn].y, this.w, this.h);
-            if (this.posRow - i < numRows)
+            if (this.posRow - i < numRows && this.posRow - i >= 0)
                 ctx.fillRect(grid[this.posRow - i][this.posColumn].x, grid[this.posRow - i][this.posColumn].y, this.w, this.h);
-            if (this.posColumn - i < numColumns)
+            if (this.posColumn - i < numColumns && this.posColumn - i >= 0)
                 ctx.fillRect(grid[this.posRow][this.posColumn - i].x, grid[this.posRow][this.posColumn - i].y, this.w, this.h);
-            if (this.posColumn + i < numColumns)
+            if (this.posColumn + i < numColumns && this.posColumn + i >= 0)
                 ctx.fillRect(grid[this.posRow][this.posColumn + i].x, grid[this.posRow][this.posColumn + i].y, this.w, this.h);
         }
     }

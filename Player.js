@@ -27,7 +27,7 @@ Player.prototype.calcPos = function () {
 Player.prototype.move = function (dt, numRows, numColumns, grid) {
     /*
        * Calculates the position on the grid based in the player's X and Y values
-       */
+    */
     var r1 = (this.y + this.vRow) % 32;
     var r2 = (this.x + this.vColumn) % 32;
     var newPosRow;
@@ -43,7 +43,8 @@ Player.prototype.move = function (dt, numRows, numColumns, grid) {
     /*
     * First it frees the current position in the grid and then sets the new one
     */
-    grid[this.posRow][this.posColumn].layer = 0;
+    if (grid[this.posRow][this.posColumn].layer == 1)
+        grid[this.posRow][this.posColumn].layer = 0;
     if (newPosColumn >= 0 && newPosColumn < numColumns) {
         if (this.vColumn > 0)
             this.movingDir = "right";
@@ -62,9 +63,15 @@ Player.prototype.move = function (dt, numRows, numColumns, grid) {
         this.vRow = 0;
         this.posRow = newPosRow;
     }
-    //console.log(this.posRow, this.posColumn);
     if (grid[this.posRow][this.posColumn].layer == 0)
         grid[this.posRow][this.posColumn].layer = 1;
+    /*
+    * It corrects the X and Y axes after moving 
+    */
+    if (this.movingDir == "up" || this.movingDir == "down")
+        this.x = grid[this.posRow][this.posColumn].x;
+    if (this.movingDir == "left" || this.movingDir == "right")
+        this.y = grid[this.posRow][this.posColumn].y;
     //updates the imunity
     if (this.immunity) {
         if (this.lastImunity >= 3) {
@@ -76,7 +83,7 @@ Player.prototype.move = function (dt, numRows, numColumns, grid) {
     }
 }
 Player.prototype.checkCollision = function (grid, numRows, numColumns) {
-    if (grid[this.posRow][this.posColumn].layer >= 2 && grid[this.posRow][this.posColumn].layer <= 3) { //wall
+    if (grid[this.posRow][this.posColumn].layer == 2 || grid[this.posRow][this.posColumn].layer == 3) { //wall
         console.log(this.posRow, this.posRow);
         if (this.movingDir == "right")
             this.x = this.x - 16;
@@ -87,7 +94,7 @@ Player.prototype.checkCollision = function (grid, numRows, numColumns) {
         else if (this.movingDir == "down")
             this.y = this.y - 16;
         this.movingDir = "none";
-        console.log(this.posRow, this.posRow);
+        //console.log(this.posRow, this.posRow);
     }
     if ((grid[this.posRow][this.posColumn].layer == 4 || grid[this.posRow][this.posColumn].layer == 6) && !this.immunity) {//enemy
         this.immunity = true;
@@ -96,8 +103,10 @@ Player.prototype.checkCollision = function (grid, numRows, numColumns) {
 }
 Player.prototype.reset = function () {
     //restore the variables to their default value
-    this.posColumn = this.x0;
-    this.posRow = this.y0;
+    this.posColumn = this.posColumn0;
+    this.posRow = this.posRow0;
+    this.x = this.posColumn * 32;
+    this.y = this.posRow * 32;
     this.vColumn = 0;
     this.vRow = 0;
     this.lifes = 3;
