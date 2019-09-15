@@ -36,28 +36,28 @@ Enemy.prototype.move = function (dt, numRows, numColumns, grid) {
         newPosColumn = Math.ceil((this.x + this.vColumn) / 32);
     else
         newPosColumn = Math.floor((this.x + this.vColumn) / 32);
-    /*
-    * First it frees the current position in the grid and then sets the new one
-    */
-
-    if (newPosColumn >= 0 && newPosColumn < numColumns) {
+        
+        if (newPosColumn >= 0 && newPosColumn < numColumns) {
         if (this.vColumn > 0)
-            this.movingDir = "right";
+        this.movingDir = "right";
         else if (this.vColumn < 0)
-            this.movingDir = "left";
+        this.movingDir = "left";
         this.x = this.x + this.vColumn
         this.posColumn = newPosColumn;
     }
     if (newPosRow >= 0 && newPosRow < numRows) {
         if (this.vRow < 0)
-            this.movingDir = "up";
+        this.movingDir = "up";
         else if (this.vRow > 0)
             this.movingDir = "down";
-        this.y = this.y + this.vRow;
-        this.posRow = newPosRow;
+            this.y = this.y + this.vRow;
+            this.posRow = newPosRow;
     }
+    /*
+    * First it frees the current position in the grid and then sets the new one
+    */
     if (grid[oldPosRow][oldPosColumn].layer == 4)
-        grid[oldPosRow][oldPosColumn].layer = 0;
+    grid[oldPosRow][oldPosColumn].layer = 0;
     if (grid[this.posRow][this.posColumn].layer == 0 || grid[this.posRow][this.posColumn].layer == 1)
         grid[this.posRow][this.posColumn].layer = 4;
     /*

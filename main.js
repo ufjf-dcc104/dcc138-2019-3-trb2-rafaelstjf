@@ -10,6 +10,7 @@ var highScore = 0;
 var level = 0;
 var enemies = [];
 var bombs = [];
+var debug = true;
 var player = new Player(1, 1); //creates the player's object
 /*
 ------------Grid Codes----------------
@@ -82,10 +83,12 @@ function drawGrid() {
                 ctx.strokeStyle = "darkgray";
                 ctx.strokeRect(grid[i][j].x, grid[i][j].y, 32, 32);
             }
-            ctx.font = "8px Arial";
-            ctx.fillStyle = "white";
-            ctx.fillText(i + ' : ' + j, grid[i][j].x + 5, grid[i][j].y + 16);
-            ctx.fillText(grid[i][j].layer, grid[i][j].x + 5, grid[i][j].y + 30);
+            if (debug) {
+                ctx.font = "8px Arial";
+                ctx.fillStyle = "white";
+                ctx.fillText(i + ' : ' + j, grid[i][j].x + 5, grid[i][j].y + 16);
+                ctx.fillText(grid[i][j].layer, grid[i][j].x + 5, grid[i][j].y + 30);
+            }
         }
     }
 }

@@ -33,6 +33,8 @@ Player.prototype.move = function (dt, numRows, numColumns, grid) {
     var r2 = (this.x + this.vColumn) % 32;
     var newPosRow;
     var newPosColumn;
+    var oldPosRow = this.posRow;
+    var oldPosColumn = this.posColumn;
     if (r1 >= this.h / 2)
         newPosRow = Math.ceil((this.y + this.vRow) / 32);
     else
@@ -41,11 +43,6 @@ Player.prototype.move = function (dt, numRows, numColumns, grid) {
         newPosColumn = Math.ceil((this.x + this.vColumn) / 32);
     else
         newPosColumn = Math.floor((this.x + this.vColumn) / 32);
-    /*
-    * First it frees the current position in the grid and then sets the new one
-    */
-    if (grid[this.posRow][this.posColumn].layer == 1)
-        grid[this.posRow][this.posColumn].layer = 0;
     if (newPosColumn >= 0 && newPosColumn < numColumns) {
         if (this.vColumn > 0)
             this.movingDir = "right";
@@ -55,6 +52,7 @@ Player.prototype.move = function (dt, numRows, numColumns, grid) {
         this.vColumn = 0;
         this.posColumn = newPosColumn;
     }
+
     if (newPosRow >= 0 && newPosRow < numRows) {
         if (this.vRow < 0)
             this.movingDir = "up";
@@ -64,6 +62,11 @@ Player.prototype.move = function (dt, numRows, numColumns, grid) {
         this.vRow = 0;
         this.posRow = newPosRow;
     }
+    /*
+    * First it frees the current position in the grid and then sets the new one
+    */
+    if (grid[oldPosRow][oldPosColumn].layer == 1)
+        grid[oldPosRow][oldPosColumn].layer = 0;
     if (grid[this.posRow][this.posColumn].layer == 0)
         grid[this.posRow][this.posColumn].layer = 1;
     /*
