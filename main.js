@@ -1,6 +1,6 @@
 var dt = prevTime = 0;
 var debug = true; //to see the hit boxes
-var inGame = true;
+var inGame = false;
 var maxSpeed = 200;
 var canvasPartition = 4;
 var grid = [];
@@ -44,25 +44,48 @@ for (var i = 0; i < numRows; i++) {
     grid[i][numColumns - 1].layer = 2;
     grid[i][0].layer = 2;
 }
+for (var j = 3; j < numColumns - 5; j++) {
+    grid[numRows - 5][j].layer = 3;
+}
+for (var j = 3; j < numColumns - 5; j++) {
+    grid[5][j].layer = 2;
+}
 //creates enemies
-for (var i = 0; i < 2; i++) {
-    enemies.push(new Enemy(parseInt(Math.random() * numRows), parseInt(Math.random() * numColumns)));
+function createEnemies() {
+    for (var i = 0; i < 5; i++) {
+        var posRow = parseInt(Math.random() * numRows);
+        var posCol = parseInt(Math.random() * numColumns);
+        while (grid[posRow][posCol].layer > 0) {
+            posRow = parseInt(Math.random() * numRows);
+            posCol = parseInt(Math.random() * numColumns);
+        }
+        enemies.push(new Enemy(posRow, posCol));
+    }
 }
 
 //Grid Functions
 function drawGrid() {
     for (var i = 0; i < numRows; i++) {
         for (var j = 0; j < numColumns; j++) {
-            if (grid[i][j].layer >= 1) {
+            if (grid[i][j].layer == 2) {
                 ctx.fillStyle = "blue";
                 ctx.fillRect(grid[i][j].x, grid[i][j].y, 32, 32);
                 ctx.strokeStyle = "gray";
                 ctx.strokeRect(grid[i][j].x, grid[i][j].y, 32, 32);
-            } else {
+            } else if (grid[i][j].layer == 0) {
 
                 ctx.strokeStyle = "black";
                 ctx.strokeRect(grid[i][j].x, grid[i][j].y, 32, 32);
+            } else if (grid[i][j].layer == 3) {
+                ctx.fillStyle = "gray";
+                ctx.fillRect(grid[i][j].x, grid[i][j].y, 32, 32);
+                ctx.strokeStyle = "darkgray";
+                ctx.strokeRect(grid[i][j].x, grid[i][j].y, 32, 32);
             }
+            ctx.font = "8px Arial";
+            ctx.fillStyle = "white";
+            ctx.fillText(i + ' : ' + j, grid[i][j].x + 5, grid[i][j].y + 16);
+            ctx.fillText(grid[i][j].layer, grid[i][j].x + 5, grid[i][j].y + 30);
         }
     }
 }
@@ -72,7 +95,33 @@ function clearCanvas() {
     //clear the canvas
     ctx.fillStyle = "green";
     ctx.fillRect(0, 0, canvas.width, canvas.height);
-    
+
+}
+function drawGameOverScreen() {
+    ctx.fillStyle = "black";
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    ctx.fillStyle = "white";
+    ctx.font = "32px Arial";
+    ctx.textAlign = 'center';
+    ctx.fillText("GAME OVER", canvas.width / 2, canvas.height / 2 - 32);
+    ctx.textAlign = 'center';
+    ctx.font = "16px Arial";
+    ctx.fillText("PRESS SPACE TO PLAY", canvas.width / 2, canvas.height / 2);
+}
+function drawHUD() {
+    //draws HUD RECT
+    ctx.fillStyle = "black";
+    ctx.strokeStyle = "white";
+    ctx.fillRect(0, 482, canvas.width, canvas.height - 482);
+    ctx.lineWidth = 5;
+    ctx.strokeRect(0, 482, canvas.width, canvas.height - 482);
+    ctx.lineWidth = 1;
+    //Draws HUD text
+    ctx.fillStyle = "red";
+    ctx.fillRect(10, 525, 32, 32);
+    ctx.font = "30px Arial";
+    ctx.fillStyle = "white";
+    ctx.fillText("x" + player.life, 70, 550);
 }
 function moveObjects() {
     player.move(dt, numRows, numColumns, grid);
@@ -97,21 +146,6 @@ function drawObjects() {
     player.draw(ctx, grid);
 }
 
-function drawHUD() {
-    //draws HUD RECT
-    ctx.fillStyle = "black";
-    ctx.strokeStyle = "white";
-    ctx.fillRect(0, 482, canvas.width, canvas.height - 482);
-    ctx.lineWidth = 5;
-    ctx.strokeRect(0, 482, canvas.width, canvas.height - 482);
-    ctx.lineWidth = 1;
-    //Draws HUD text
-    ctx.fillStyle="red";
-    ctx.fillRect(10,525, 32, 32);
-    ctx.font = "30px Arial";
-    ctx.fillStyle = "white";
-    ctx.fillText("x" + player.life, 50, 550);
-}
 function checkCollisionObjects() {
     player.checkCollision(grid, numRows, numColumns);
     for (var i = 0; i < enemies.length; i++) {
@@ -126,14 +160,18 @@ function checkCollisionObjects() {
     }
 }
 function loop(t) {
-    clearCanvas();
-    drawHUD();
     if (inGame == true) {
+        clearCanvas();
+        drawHUD();
         dt = (t - prevTime) / 1000;
         moveObjects() //move them first and then check collisions
         checkCollisionObjects();
         drawObjects();
+        if (player.life == 0)
+            inGame = false;
         prevTime = t;
+    } else {
+        drawGameOverScreen();
     }
     requestAnimationFrame(loop);
 }
@@ -171,8 +209,14 @@ addEventListener("keydown", function (e) {
 addEventListener("keyup", function (e) {
     switch (e.keyCode) {
         case 32: //space key
-            if (bombs.length < player.maxBombs) {
-                bombs.push(new Bomb(player.posRow, player.posColumn));
+            if (inGame) {
+                if (bombs.length < player.maxBombs) {
+                    bombs.push(new Bomb(player.posRow, player.posColumn));
+                }
+            } else {
+                player.reset();
+                createEnemies();
+                inGame = true;
             }
             break;
         case 37: //left arrow key

@@ -19,6 +19,7 @@ function Player(row0, column0) {
     this.life = 3;
     this.score = 0;
     this.maxBombs = 2;
+    this.objectsThatCollide = [2, 3, 5];
 }
 Player.prototype.calcPos = function () {
 
@@ -83,18 +84,21 @@ Player.prototype.move = function (dt, numRows, numColumns, grid) {
     }
 }
 Player.prototype.checkCollision = function (grid, numRows, numColumns) {
-    if (grid[this.posRow][this.posColumn].layer == 2 || grid[this.posRow][this.posColumn].layer == 3) { //wall
-        console.log(this.posRow, this.posRow);
-        if (this.movingDir == "right")
-            this.x = this.x - 16;
-        else if (this.movingDir == "left")
-            this.x = this.x + 16;
-        else if (this.movingDir == "up")
-            this.y = this.y + 16;
-        else if (this.movingDir == "down")
-            this.y = this.y - 16;
-        this.movingDir = "none";
-        //console.log(this.posRow, this.posRow);
+
+    for (var i = 0; i < this.objectsThatCollide.length; i++) {
+        if (grid[this.posRow][this.posColumn].layer == this.objectsThatCollide[i]) { //wall
+            console.log(this.posRow, this.posRow);
+            if (this.movingDir == "right")
+                this.x = this.x - 16;
+            else if (this.movingDir == "left")
+                this.x = this.x + 16;
+            else if (this.movingDir == "up")
+                this.y = this.y + 16;
+            else if (this.movingDir == "down")
+                this.y = this.y - 16;
+            this.movingDir = "none";
+            //console.log(this.posRow, this.posRow);
+        }
     }
     if ((grid[this.posRow][this.posColumn].layer == 4 || grid[this.posRow][this.posColumn].layer == 6) && !this.immunity) {//enemy
         this.immunity = true;

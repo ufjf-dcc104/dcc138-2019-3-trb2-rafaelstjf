@@ -29,12 +29,12 @@ Bomb.prototype.calcPosToExplode = function (grid, numRows, numColumns) {
         } else break;
     }
     for (var i = 0; i < 3; i++) {
-        if (this.posColumn - i < numRows && this.posColumn - i >= 0 && grid[this.posRow][this.posColumn - i].layer != 2) {
+        if (this.posColumn - i < numColumns && this.posColumn - i >= 0 && grid[this.posRow][this.posColumn - i].layer != 2) {
             this.positionsToExplode.push({ row: this.posRow, column: this.posColumn - i });
         } else break;
     }
     for (var i = 0; i < 3; i++) {
-        if (this.posColumn + i < numRows && this.posColumn + i >= 0 && grid[this.posRow][this.posColumn + i].layer != 2) {
+        if (this.posColumn + i < numColumns && this.posColumn + i >= 0 && grid[this.posRow][this.posColumn + i].layer != 2) {
             this.positionsToExplode.push({ row: this.posRow, column: this.posColumn + i });
         } else break;
     }
@@ -52,6 +52,7 @@ Bomb.prototype.behave = function (dt, grid, numRows, numColumns) {
             this.color = "red";
         } else if (this.currentTick < this.maxTick && !this.readyToExplode) {
             this.currentTick = this.currentTick + dt;
+            grid[this.posRow][this.posColumn].layer = 5;
             if (this.currentTick >= 2 && this.currentTick < 3)
                 this.color = "orange";
         } else if (this.currentTick < this.maxTickAE && this.readyToExplode) {
