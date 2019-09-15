@@ -16,7 +16,7 @@ function Player(row0, column0) {
     this.strokeColor = "black";
     this.immunity = false;
     this.lastImunity = 0;
-    this.lifes = 3;
+    this.life = 3;
     this.score = 0;
     this.maxBombs = 2;
 }
@@ -98,7 +98,7 @@ Player.prototype.checkCollision = function (grid, numRows, numColumns) {
     }
     if ((grid[this.posRow][this.posColumn].layer == 4 || grid[this.posRow][this.posColumn].layer == 6) && !this.immunity) {//enemy
         this.immunity = true;
-        this.lifes--;
+        this.life--;
     }
 }
 Player.prototype.reset = function () {
@@ -109,7 +109,7 @@ Player.prototype.reset = function () {
     this.y = this.posRow * 32;
     this.vColumn = 0;
     this.vRow = 0;
-    this.lifes = 3;
+    this.life = 3;
     this.score = 0;
     this.maxBombs = 1;
 }

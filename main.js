@@ -72,13 +72,7 @@ function clearCanvas() {
     //clear the canvas
     ctx.fillStyle = "green";
     ctx.fillRect(0, 0, canvas.width, canvas.height);
-    //draw HUD RECT
-    ctx.fillStyle = "black";
-    ctx.strokeStyle = "white";
-    ctx.fillRect(0, 482, canvas.width, canvas.height - 482);
-    ctx.lineWidth = 5;
-    ctx.strokeRect(0, 482, canvas.width, canvas.height - 482);
-    ctx.lineWidth = 1;
+    
 }
 function moveObjects() {
     player.move(dt, numRows, numColumns, grid);
@@ -87,7 +81,7 @@ function moveObjects() {
     }
     for (var i = 0; i < bombs.length; i++) {
         bombs[i].behave(dt, grid, numRows, numColumns);
-        if (bombs[i].explosionDone) {
+        if (bombs[i].explosionComplete) {
             bombs.splice(i, 1);
         }
     }
@@ -102,6 +96,22 @@ function drawObjects() {
     }
     player.draw(ctx, grid);
 }
+
+function drawHUD() {
+    //draws HUD RECT
+    ctx.fillStyle = "black";
+    ctx.strokeStyle = "white";
+    ctx.fillRect(0, 482, canvas.width, canvas.height - 482);
+    ctx.lineWidth = 5;
+    ctx.strokeRect(0, 482, canvas.width, canvas.height - 482);
+    ctx.lineWidth = 1;
+    //Draws HUD text
+    ctx.fillStyle="red";
+    ctx.fillRect(10,525, 32, 32);
+    ctx.font = "30px Arial";
+    ctx.fillStyle = "white";
+    ctx.fillText("x" + player.life, 50, 550);
+}
 function checkCollisionObjects() {
     player.checkCollision(grid, numRows, numColumns);
     for (var i = 0; i < enemies.length; i++) {
@@ -110,13 +120,14 @@ function checkCollisionObjects() {
             enemies.splice(i, 1);
     }
     for (var i = 0; i < bombs.length; i++) {
-        if (bombs[i].explosionDone) {
+        if (bombs[i].explosionComplete) {
             bombs.splice(i, 1);
         }
     }
 }
 function loop(t) {
     clearCanvas();
+    drawHUD();
     if (inGame == true) {
         dt = (t - prevTime) / 1000;
         moveObjects() //move them first and then check collisions

@@ -97,7 +97,6 @@ Enemy.prototype.reset = function () {
     this.posRow = this.posColumn0;
     this.vColumn = 0;
     this.vRow = 0;
-    this.lifes = 3;
     this.score = 0;
     this.maposColumnBombs = 1;
 }
