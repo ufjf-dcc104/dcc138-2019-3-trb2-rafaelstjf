@@ -52,7 +52,8 @@ Bomb.prototype.behave = function (dt, grid, numRows, numColumns) {
             this.color = "red";
         } else if (this.currentTick < this.maxTick && !this.readyToExplode) {
             this.currentTick = this.currentTick + dt;
-            grid[this.posRow][this.posColumn].layer = 5;
+            if (grid[this.posRow][this.posColumn].layer != 1) //1 second to move
+                grid[this.posRow][this.posColumn].layer = 5;
             if (this.currentTick >= 2 && this.currentTick < 3)
                 this.color = "orange";
         } else if (this.currentTick < this.maxTickAE && this.readyToExplode) {
