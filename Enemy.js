@@ -20,12 +20,14 @@ function Enemy(row0, column0) {
 
 Enemy.prototype.move = function (dt, numRows, numColumns, grid) {
     /*
-      * Calculates the position on the grid based in the player's X and Y values
+    * Calculates the position on the grid based in the player's X and Y values
    */
     var r1 = (this.y + this.vRow) % 32;
     var r2 = (this.x + this.vColumn) % 32;
     var newPosRow;
     var newPosColumn;
+    var oldPosRow = this.posRow;
+    var oldPosColumn = this.posColumn;
     if (r1 >= this.h / 2)
         newPosRow = Math.ceil((this.y + this.vRow) / 32);
     else
@@ -37,8 +39,7 @@ Enemy.prototype.move = function (dt, numRows, numColumns, grid) {
     /*
     * First it frees the current position in the grid and then sets the new one
     */
-    if (grid[this.posRow][this.posColumn].layer == 4)
-        grid[this.posRow][this.posColumn].layer = 0;
+
     if (newPosColumn >= 0 && newPosColumn < numColumns) {
         if (this.vColumn > 0)
             this.movingDir = "right";
@@ -55,7 +56,9 @@ Enemy.prototype.move = function (dt, numRows, numColumns, grid) {
         this.y = this.y + this.vRow;
         this.posRow = newPosRow;
     }
-    if (grid[this.posRow][this.posColumn].layer == 0)
+    if (grid[oldPosRow][oldPosColumn].layer == 4)
+        grid[oldPosRow][oldPosColumn].layer = 0;
+    if (grid[this.posRow][this.posColumn].layer == 0 || grid[this.posRow][this.posColumn].layer == 1)
         grid[this.posRow][this.posColumn].layer = 4;
     /*
     * It corrects the X and Y axes after moving 
