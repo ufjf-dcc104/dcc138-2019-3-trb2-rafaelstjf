@@ -15,8 +15,10 @@ function Bomb(row0, column0) {
     this.positionsToExplode = [];
 }
 Bomb.prototype.calcPosToExplode = function (grid, numRows, numColumns) {
-    //checks if the +3 positions of each side (up, down, left and right) aren't indestructible walls,
-    // then mark them to explode
+    /*
+    *  checks if the +3 positions of each side (up, down, left and right) aren't indestructible walls,
+    * then mark them to explode
+    */
     for (var i = 0; i < 3; i++) {
         if (this.posRow + i < numRows && this.posRow + i >= 0 && grid[this.posRow + i][this.posColumn].layer != 2) {
             this.positionsToExplode.push({ row: this.posRow + i, column: this.posColumn });
@@ -52,7 +54,7 @@ Bomb.prototype.behave = function (dt, grid, numRows, numColumns) {
             this.color = "red";
         } else if (this.currentTick < this.maxTick && !this.readyToExplode) {
             this.currentTick = this.currentTick + dt;
-            if (grid[this.posRow][this.posColumn].layer != 1) //1 second to move
+            if (grid[this.posRow][this.posColumn].layer == 0) //1 second to move
                 grid[this.posRow][this.posColumn].layer = 5;
             if (this.currentTick >= 2 && this.currentTick < 3)
                 this.color = "orange";

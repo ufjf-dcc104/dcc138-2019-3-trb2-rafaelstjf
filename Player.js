@@ -10,6 +10,7 @@ function Player(row0, column0) {
     this.boxColliderW = 32;
     this.boxColliderH = 32;
     this.vColumn = 0;
+    this.maxSpeed = 4;
     this.vRow = 0;
     this.movingDir = "none";
     this.color = "red";
@@ -35,11 +36,11 @@ Player.prototype.move = function (dt, numRows, numColumns, grid) {
     var newPosColumn;
     var oldPosRow = this.posRow;
     var oldPosColumn = this.posColumn;
-    if (r1 >= this.h / 2)
+    if (r1 >= (this.h  * 0.6))
         newPosRow = Math.ceil((this.y + this.vRow) / 32);
     else
         newPosRow = Math.floor((this.y + this.vRow) / 32);
-    if (r2 >= this.w / 2)
+    if (r2 >= (this.w * 0.6))
         newPosColumn = Math.ceil((this.x + this.vColumn) / 32);
     else
         newPosColumn = Math.floor((this.x + this.vColumn) / 32);

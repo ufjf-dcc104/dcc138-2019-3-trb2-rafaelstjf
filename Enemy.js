@@ -1,20 +1,24 @@
 function Enemy(row0, column0) {
+    //position
     this.posColumn = column0;
     this.posRow = row0;
     this.posColumn0 = column0;
     this.posRow0 = row0;
-    this.w = 32;
-    this.h = 32;
     this.x = this.posColumn * 32;
     this.y = this.posRow * 32;
+    //size
+    this.w = 32;
+    this.h = 32;
     this.boxColumnColliderW = 32;
     this.boxColumnColliderH = 32;
-    this.vColumn = 1;
-    this.vRow = 1;
+    //movement
+    this.vColumn = 3;
+    this.vRow = 3;
     this.movingDir = "none";
+    //shape and color
     this.color = "pink";
     this.strokeColor = "black";
-    this.score = 0;
+    //others
     this.alive = true;
 }
 
@@ -69,6 +73,9 @@ Enemy.prototype.move = function (dt, numRows, numColumns, grid) {
         this.y = grid[this.posRow][this.posColumn].y;
 }
 Enemy.prototype.checkCollision = function (grid, numRows, numColumns) {
+    /*
+    * if the enemy collides if an object it will have its speed multiplied per -1
+    */
     if ((grid[this.posRow][this.posColumn].layer >= 2 && grid[this.posRow][this.posColumn].layer <= 3) || (grid[this.posRow][this.posColumn].layer == 5)) {
         if (this.vColumn > 0) {
             this.posColumn = this.posColumn - 1;

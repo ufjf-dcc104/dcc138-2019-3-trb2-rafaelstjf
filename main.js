@@ -1,5 +1,5 @@
 var dt = prevTime = 0;
-var debug = true; //to see the hit boxes
+var debug = false; //to see the hit boxes
 var inGame = false;
 var maxSpeed = 200;
 var canvasPartition = 4;
@@ -10,7 +10,6 @@ var highScore = 0;
 var level = 0;
 var enemies = [];
 var bombs = [];
-var debug = true;
 var player = new Player(1, 1); //creates the player's object
 /*
 ------------Grid Codes----------------
@@ -82,6 +81,9 @@ function drawGrid() {
                 ctx.fillRect(grid[i][j].x, grid[i][j].y, 32, 32);
                 ctx.strokeStyle = "darkgray";
                 ctx.strokeRect(grid[i][j].x, grid[i][j].y, 32, 32);
+            } else if (grid[i][j].layer == 1) {
+                ctx.fillStyle = "black";
+                ctx.fillRect(grid[i][j].x, grid[i][j].y, 32, 32);
             }
             if (debug) {
                 ctx.font = "8px Arial";
@@ -183,31 +185,14 @@ requestAnimationFrame(loop);
 
 addEventListener("keydown", function (e) {
 
-    if (e.keyCode == 37)
-        player.vColumn = -3;
-    if (e.keyCode == 38)
-        player.vRow = -3;
-    if (e.keyCode == 39)
-        player.vColumn = 3;
-    if (e.keyCode == 40)
-        player.vRow = 3;
-    /*
-    switch (e.keyCode) {
-        case 37: //left arrow key
-            player.vColumn = -3;
-            break;
-        case 38: //up arrow key
-            player.vRow = -3;
-            break;
-        case 39: //right arrow key
-            player.vColumn = 3;
-            break;
-        case 40: //down arrow key
-            player.vRow = 3;
-            break;
-        default:
-    }
-    */
+    if (e.keyCode == 37)//left
+        player.vColumn = -player.maxSpeed;
+    if (e.keyCode == 38)//up
+        player.vRow = -player.maxSpeed;
+    if (e.keyCode == 39)//right
+        player.vColumn = player.maxSpeed;
+    if (e.keyCode == 40)//down
+        player.vRow = player.maxSpeed;
 });
 addEventListener("keyup", function (e) {
     switch (e.keyCode) {
