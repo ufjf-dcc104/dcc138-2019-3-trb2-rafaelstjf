@@ -46,7 +46,7 @@ Enemy.prototype.move = function (dt, numRows, numColumns, grid) {
         this.movingDir = "right";
         else if (this.vColumn < 0)
         this.movingDir = "left";
-        this.x = this.x + this.vColumn
+        this.x = this.x + this.vColumn;
         this.posColumn = newPosColumn;
     }
     if (newPosRow >= 0 && newPosRow < numRows) {

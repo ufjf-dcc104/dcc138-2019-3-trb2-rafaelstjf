@@ -22,10 +22,7 @@ function Player(row0, column0) {
     this.maxBombs = 2;
     this.objectsThatCollide = [2, 3, 5];
 }
-Player.prototype.calcPos = function () {
 
-
-}
 Player.prototype.move = function (dt, numRows, numColumns, grid) {
     /*
        * Calculates the position on the grid based in the player's X and Y values
@@ -49,8 +46,8 @@ Player.prototype.move = function (dt, numRows, numColumns, grid) {
             this.movingDir = "right";
         else if (this.vColumn < 0)
             this.movingDir = "left";
-        this.x = this.x + this.vColumn
-        this.vColumn = 0;
+        this.x = this.x + this.vColumn;
+        //this.vColumn = 0;
         this.posColumn = newPosColumn;
     }
 
@@ -60,7 +57,7 @@ Player.prototype.move = function (dt, numRows, numColumns, grid) {
         else if (this.vRow > 0)
             this.movingDir = "down";
         this.y = this.y + this.vRow;
-        this.vRow = 0;
+        //this.vRow = 0;
         this.posRow = newPosRow;
     }
     /*
