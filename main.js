@@ -11,18 +11,13 @@ var level = 0;
 var enemies = [];
 var bombs = [];
 var player = new Player(1, 1); //creates the player's object
-var imgPortrait = new Image();
-imgPortrait.src = "Assets/portrait.png";
-var imgBlock = new Image();
-imgBlock.src = "Assets/block.png";
-var imgDWall = new Image();
-imgDWall.src = "Assets/destructWall.png";
-var imgFloor = new Image();
-imgFloor.src = "Assets/floor.png";
-imgPortrait.addEventListener ("load", function(){
-    console.log("Imagem player carregada!");
-});
-console.log("Carregando imagem player....")
+var assetManager = new AssetManager();
+//load images
+assetManager.loadImage("free", "Assets/floor.png");
+assetManager.loadImage("desWall", "Assets/destructibleWall.png");
+assetManager.loadImage("indesWall", "Assets/indestructibleWall.png");
+assetManager.loadImage("portrait", "Assets/portrait.png");
+
 /*
 ------------Grid Codes----------------
 0 - Free
@@ -80,27 +75,11 @@ function drawGrid() {
     for (var i = 0; i < numRows; i++) {
         for (var j = 0; j < numColumns; j++) {
             if (grid[i][j].layer == 2) {
-                /*
-                ctx.fillStyle = "blue";
-                ctx.fillRect(grid[i][j].x, grid[i][j].y, 32, 32);
-                ctx.strokeStyle = "gray";
-                ctx.strokeRect(grid[i][j].x, grid[i][j].y, 32, 32);
-                */
-               ctx.drawImage(imgBlock, grid[i][j].x , grid[i][j].y, 32, 32);
+                ctx.drawImage(assetManager.assets["indesWall"], grid[i][j].x, grid[i][j].y, 32, 32);
             } else if (grid[i][j].layer == 0) {
-                /*
-                ctx.strokeStyle = "black";
-                ctx.strokeRect(grid[i][j].x, grid[i][j].y, 32, 32);
-                */
-                ctx.drawImage(imgFloor, grid[i][j].x , grid[i][j].y, 32, 32);
+                ctx.drawImage(assetManager.assets["free"], grid[i][j].x, grid[i][j].y, 32, 32);
             } else if (grid[i][j].layer == 3) {
-                /*
-                ctx.fillStyle = "gray";
-                ctx.fillRect(grid[i][j].x, grid[i][j].y, 32, 32);
-                ctx.strokeStyle = "darkgray";
-                ctx.strokeRect(grid[i][j].x, grid[i][j].y, 32, 32);
-                */
-               ctx.drawImage(imgDWall, grid[i][j].x , grid[i][j].y, 32, 32);
+                ctx.drawImage(assetManager.assets["desWall"], grid[i][j].x, grid[i][j].y, 32, 32);
             } else if (grid[i][j].layer == 1) {
                 ctx.fillStyle = "black";
                 ctx.fillRect(grid[i][j].x, grid[i][j].y, 32, 32);
@@ -144,7 +123,7 @@ function drawHUD() {
     //Draws HUD text
     //ctx.fillStyle = "red";
     //ctx.fillRect(10, 525, 32, 32);
-    ctx.drawImage(imgPortrait, 10, 500, 64, 64);
+    ctx.drawImage(assetManager.assets["portrait"], 10, 500, 64, 64);
     ctx.font = "30px Arial";
     ctx.fillStyle = "white";
     ctx.fillText("x" + player.life, 90, 550);

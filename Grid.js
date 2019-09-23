@@ -31,23 +31,15 @@ function Grid(canvasWidth, canvasHeight, cellWidth, cellHeight) {
     }
 }
 
-Grid.prototype.draw = function(ctx){
+Grid.prototype.draw = function (ctx) {
     for (var i = 0; i < numRows; i++) {
         for (var j = 0; j < numColumns; j++) {
             if (cellsArray[i][j].layer == 2) {
-                ctx.fillStyle = "blue";
-                ctx.fillRect(cellsArray[i][j].x, cellsArray[i][j].y, 32, 32);
-                ctx.strokeStyle = "gray";
-                ctx.strokeRect(cellsArray[i][j].x, cellsArray[i][j].y, 32, 32);
+                ctx.drawImage(assetManager.assets["indesWall"], cellsArray[i][j].x , cellsArray[i][j].y, 32, 32);
             } else if (cellsArray[i][j].layer == 0) {
-
-                ctx.strokeStyle = "black";
-                ctx.strokeRect(cellsArray[i][j].x, cellsArray[i][j].y, 32, 32);
+                ctx.drawImage(assetManager.assets["free"], cellsArray[i][j].x , cellsArray[i][j].y, 32, 32);
             } else if (cellsArray[i][j].layer == 3) {
-                ctx.fillStyle = "gray";
-                ctx.fillRect(cellsArray[i][j].x, cellsArray[i][j].y, 32, 32);
-                ctx.strokeStyle = "darkgray";
-                ctx.strokeRect(cellsArray[i][j].x, cellsArray[i][j].y, 32, 32);
+                ctx.drawImage(assetManager.assets["desWall"], cellsArray[i][j].x , cellsArray[i][j].y, 32, 32);
             } else if (cellsArray[i][j].layer == 1) {
                 ctx.fillStyle = "black";
                 ctx.fillRect(cellsArray[i][j].x, cellsArray[i][j].y, 32, 32);
@@ -59,5 +51,13 @@ Grid.prototype.draw = function(ctx){
                 ctx.fillText(cellsArray[i][j].layer, cellsArray[i][j].x + 5, cellsArray[i][j].y + 30);
             }
         }
-    } 
+    }
+}
+
+Grid.prototype.buildFromMatrix = function (matrix) {
+    for (var i = 0; i < numRows; i++) {
+        for (var j = 0; j < numColumns; j++) {
+            cellsArray[i][j].layer = matrix[i][j];
+        }
+    }
 }
