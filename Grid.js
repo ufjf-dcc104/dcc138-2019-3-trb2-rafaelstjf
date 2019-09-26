@@ -35,11 +35,11 @@ Grid.prototype.draw = function (ctx) {
     for (var i = 0; i < numRows; i++) {
         for (var j = 0; j < numColumns; j++) {
             if (cellsArray[i][j].layer == 2) {
-                ctx.drawImage(assetManager.assets["indesWall"], cellsArray[i][j].x , cellsArray[i][j].y, 32, 32);
+                ctx.drawImage(assetManager.images["indesWall"], cellsArray[i][j].x , cellsArray[i][j].y, 32, 32);
             } else if (cellsArray[i][j].layer == 0) {
-                ctx.drawImage(assetManager.assets["free"], cellsArray[i][j].x , cellsArray[i][j].y, 32, 32);
+                ctx.drawImage(assetManager.images["free"], cellsArray[i][j].x , cellsArray[i][j].y, 32, 32);
             } else if (cellsArray[i][j].layer == 3) {
-                ctx.drawImage(assetManager.assets["desWall"], cellsArray[i][j].x , cellsArray[i][j].y, 32, 32);
+                ctx.drawImage(assetManager.images["desWall"], cellsArray[i][j].x , cellsArray[i][j].y, 32, 32);
             } else if (cellsArray[i][j].layer == 1) {
                 ctx.fillStyle = "black";
                 ctx.fillRect(cellsArray[i][j].x, cellsArray[i][j].y, 32, 32);

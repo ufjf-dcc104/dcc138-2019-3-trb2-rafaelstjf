@@ -123,7 +123,7 @@ Player.prototype.draw = function (ctx, grid) {
     ctx.fillStyle = this.color;
     if (this.immunity)
         ctx.fillStyle = "white";
-    ctx.fillRect(this.x, this.y, this.w, this.h);
+    ctx.drawImage(assetsManager.images["player"], this.x, this.y, this.w, this.h);
     /*
     ctx.save();
     ctx.translate(this.posColumn * 32, this.posRow * 32);

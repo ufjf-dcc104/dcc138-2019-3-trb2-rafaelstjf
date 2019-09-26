@@ -11,12 +11,15 @@ var level = 0;
 var enemies = [];
 var bombs = [];
 var player = new Player(1, 1); //creates the player's object
-var assetManager = new AssetManager();
+var assetsManager = new AssetsManager();
 //load images
-assetManager.loadImage("free", "Assets/floor.png");
-assetManager.loadImage("desWall", "Assets/destructibleWall.png");
-assetManager.loadImage("indesWall", "Assets/indestructibleWall.png");
-assetManager.loadImage("portrait", "Assets/portrait.png");
+assetsManager.loadImage("free", "Assets/floor.png");
+assetsManager.loadImage("desWall", "Assets/destructibleWall.png");
+assetsManager.loadImage("indesWall", "Assets/indestructibleWall.png");
+assetsManager.loadImage("portrait", "Assets/portrait.png");
+assetsManager.loadImage("player", "Assets/player.png");
+assetsManager.loadImage("bomb", "Assets/bomb.png");
+assetsManager.loadImage("explosion", "Assets/explosion.png");
 
 /*
 ------------Grid Codes----------------
@@ -75,15 +78,14 @@ function drawGrid() {
     for (var i = 0; i < numRows; i++) {
         for (var j = 0; j < numColumns; j++) {
             if (grid[i][j].layer == 2) {
-                ctx.drawImage(assetManager.assets["indesWall"], grid[i][j].x, grid[i][j].y, 32, 32);
-            } else if (grid[i][j].layer == 0) {
-                ctx.drawImage(assetManager.assets["free"], grid[i][j].x, grid[i][j].y, 32, 32);
-            } else if (grid[i][j].layer == 3) {
-                ctx.drawImage(assetManager.assets["desWall"], grid[i][j].x, grid[i][j].y, 32, 32);
+                ctx.drawImage(assetsManager.images["indesWall"], grid[i][j].x, grid[i][j].y, 32, 32);
             } else if (grid[i][j].layer == 1) {
                 ctx.fillStyle = "black";
                 ctx.fillRect(grid[i][j].x, grid[i][j].y, 32, 32);
-            }
+            } else if (grid[i][j].layer == 3) {
+                ctx.drawImage(assetsManager.images["desWall"], grid[i][j].x, grid[i][j].y, 32, 32);
+            } else
+                ctx.drawImage(assetsManager.images["free"], grid[i][j].x, grid[i][j].y, 32, 32);
             if (debug) {
                 ctx.font = "8px Arial";
                 ctx.fillStyle = "white";
@@ -123,7 +125,7 @@ function drawHUD() {
     //Draws HUD text
     //ctx.fillStyle = "red";
     //ctx.fillRect(10, 525, 32, 32);
-    ctx.drawImage(assetManager.assets["portrait"], 10, 500, 64, 64);
+    ctx.drawImage(assetsManager.images["portrait"], 10, 500, 64, 64);
     ctx.font = "30px Arial";
     ctx.fillStyle = "white";
     ctx.fillText("x" + player.life, 90, 550);
