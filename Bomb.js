@@ -81,7 +81,7 @@ Bomb.prototype.draw = function (ctx, grid, numRows, numColumns) {
             ctx.drawImage(
                 assetsManager.images["explosion"],
                 (F % 27) * 35,
-                Math.floor(F / 3) * 0,
+                0,
                 35,
                 43,
                 grid[this.positionsToExplode[i].row][this.positionsToExplode[i].column].x,

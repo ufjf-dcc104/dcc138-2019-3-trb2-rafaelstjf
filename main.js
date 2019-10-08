@@ -17,7 +17,8 @@ assetsManager.loadImage("free", "Assets/floor.png");
 assetsManager.loadImage("desWall", "Assets/destructibleWall.png");
 assetsManager.loadImage("indesWall", "Assets/indestructibleWall.png");
 assetsManager.loadImage("portrait", "Assets/portrait.png");
-assetsManager.loadImage("player", "Assets/player.png");
+assetsManager.loadImage("player", "Assets/player_tileset.png");
+assetsManager.loadImage("player_damaged", "Assets/player_tileset2.png");
 assetsManager.loadImage("bomb", "Assets/bomb.png");
 assetsManager.loadImage("explosion", "Assets/explosion.png");
 
@@ -79,9 +80,6 @@ function drawGrid() {
         for (var j = 0; j < numColumns; j++) {
             if (grid[i][j].layer == 2) {
                 ctx.drawImage(assetsManager.images["indesWall"], grid[i][j].x, grid[i][j].y, 32, 32);
-            } else if (grid[i][j].layer == 1) {
-                ctx.fillStyle = "black";
-                ctx.fillRect(grid[i][j].x, grid[i][j].y, 32, 32);
             } else if (grid[i][j].layer == 3) {
                 ctx.drawImage(assetsManager.images["desWall"], grid[i][j].x, grid[i][j].y, 32, 32);
             } else
@@ -150,7 +148,7 @@ function drawObjects() {
     for (var i = 0; i < bombs.length; i++) {
         bombs[i].draw(ctx, grid, numRows, numColumns);
     }
-    player.draw(ctx, grid);
+    player.draw(ctx, dt);
 }
 
 function checkCollisionObjects() {
@@ -212,17 +210,21 @@ addEventListener("keyup", function (e) {
         case 37: //left arrow key
             player.vColumn = 0;
             player.movingDir = "none";
+            player.frame = 0;
             break;
         case 38: //up arrow key
             player.movingDir = "none";
+            player.frame = 0;
             player.vRow = 0;
             break;
         case 39: //right arrow key
             player.movingDir = "none";
+            player.frame = 0;
             player.vColumn = 0;
             break;
         case 40: //down arrow key
             player.movingDir = "none";
+            player.frame = 0;
             player.vRow = 0;
             break;
         default:

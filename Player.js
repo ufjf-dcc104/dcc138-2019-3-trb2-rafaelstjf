@@ -21,6 +21,7 @@ function Player(row0, column0) {
     this.score = 0;
     this.maxBombs = 2;
     this.objectsThatCollide = [2, 3, 5];
+    this.frame = 0;
 }
 
 Player.prototype.move = function (dt, numRows, numColumns, grid) {
@@ -33,7 +34,7 @@ Player.prototype.move = function (dt, numRows, numColumns, grid) {
     var newPosColumn;
     var oldPosRow = this.posRow;
     var oldPosColumn = this.posColumn;
-    if (r1 >= (this.h  * 0.6))
+    if (r1 >= (this.h * 0.6))
         newPosRow = Math.ceil((this.y + this.vRow) / 32);
     else
         newPosRow = Math.floor((this.y + this.vRow) / 32);
@@ -75,14 +76,6 @@ Player.prototype.move = function (dt, numRows, numColumns, grid) {
     if (this.movingDir == "left" || this.movingDir == "right")
         this.y = grid[this.posRow][this.posColumn].y;
     //updates the imunity
-    if (this.immunity) {
-        if (this.lastImunity >= 3) {
-            this.lastImunity = 0;
-            this.immunity = false;
-        } else {
-            this.lastImunity = this.lastImunity + dt;
-        }
-    }
 }
 Player.prototype.checkCollision = function (grid, numRows, numColumns) {
 
@@ -119,16 +112,30 @@ Player.prototype.reset = function () {
     this.maxBombs = 1;
 }
 
-Player.prototype.draw = function (ctx, grid) {
-    ctx.fillStyle = this.color;
-    if (this.immunity)
-        ctx.fillStyle = "white";
-    ctx.drawImage(assetsManager.images["player"], this.x, this.y, this.w, this.h);
-    /*
-    ctx.save();
-    ctx.translate(this.posColumn * 32, this.posRow * 32);
-    ctx.fillStyle = this.color;
-    ctx.fillRect(-this.w / 2, -this.h / 2, this.w, this.h);
-    ctx.restore();
-    */
+Player.prototype.draw = function (ctx, dt) {
+    this.frame += 6 * dt;
+    var F = Math.floor(this.frame);
+    var key = "player";
+    if (this.immunity) {
+        key = "player_damaged";
+        if (this.lastImunity >= 3) {
+            this.lastImunity = 0;
+            this.immunity = false;
+        } else {
+            this.lastImunity = this.lastImunity + dt;
+        }
+    }
+    if (this.movingDir == "down") {
+        ctx.drawImage(assetsManager.images[key], (F % 3) * 17, 0, 17, 17, this.x, this.y, this.w, this.h);
+    } else if (this.movingDir == "up") {
+        ctx.drawImage(assetsManager.images[key], (F % 3) * 17, 34, 17, 17, this.x, this.y, this.w, this.h);
+
+    } else if (this.movingDir == "left") {
+        ctx.drawImage(assetsManager.images[key], (F % 3) * 17, 51, 17, 17, this.x, this.y, -this.w, this.h);
+
+    } else if (this.movingDir == "right") {
+        ctx.drawImage(assetsManager.images[key], (F % 3) * 17, 17, 17, 17, this.x, this.y, this.w, this.h);
+    } else {
+        ctx.drawImage(assetsManager.images[key], 0, 0, 17, 17, this.x, this.y, this.w, this.h);
+    }
 }
