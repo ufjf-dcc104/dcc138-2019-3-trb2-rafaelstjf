@@ -13,15 +13,16 @@ var bombs = [];
 var player = new Player(1, 1); //creates the player's object
 var assetsManager = new AssetsManager();
 //load images
-assetsManager.loadImage("free", "Assets/floor.png");
-assetsManager.loadImage("desWall", "Assets/destructibleWall.png");
-assetsManager.loadImage("indesWall", "Assets/indestructibleWall.png");
-assetsManager.loadImage("portrait", "Assets/portrait.png");
-assetsManager.loadImage("player", "Assets/player_tileset.png");
-assetsManager.loadImage("player_damaged", "Assets/player_tileset2.png");
-assetsManager.loadImage("bomb", "Assets/bomb.png");
-assetsManager.loadImage("explosion", "Assets/explosion.png");
-
+assetsManager.loadImage("free", "Assets/Sprites/floor.png");
+assetsManager.loadImage("desWall", "Assets/Sprites/destructibleWall.png");
+assetsManager.loadImage("indesWall", "Assets/Sprites/indestructibleWall.png");
+assetsManager.loadImage("portrait", "Assets/Sprites/portrait.png");
+assetsManager.loadImage("player", "Assets/Sprites/player_tileset.png");
+assetsManager.loadImage("player_damaged", "Assets/Sprites/player_tileset2.png");
+assetsManager.loadImage("bomb", "Assets/Sprites/bomb.png");
+assetsManager.loadImage("explosion", "Assets/Sprites/explosion.png");
+//load audios
+assetsManager.loadAudio("explosion", "Assets/Sounds/explosion.mp3");
 /*
 ------------Grid Codes----------------
 0 - Free
@@ -134,7 +135,7 @@ function moveObjects() {
         enemies[i].move(dt, numRows, numColumns, grid);
     }
     for (var i = 0; i < bombs.length; i++) {
-        bombs[i].behave(dt, grid, numRows, numColumns);
+        bombs[i].behave(dt, grid, numRows, numColumns, assetsManager);
         if (bombs[i].explosionComplete) {
             bombs.splice(i, 1);
         }

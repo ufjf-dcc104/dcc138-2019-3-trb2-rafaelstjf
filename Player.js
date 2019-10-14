@@ -78,7 +78,6 @@ Player.prototype.move = function (dt, numRows, numColumns, grid) {
     //updates the imunity
 }
 Player.prototype.checkCollision = function (grid, numRows, numColumns) {
-
     for (var i = 0; i < this.objectsThatCollide.length; i++) {
         if (grid[this.posRow][this.posColumn].layer == this.objectsThatCollide[i]) { //wall
             console.log(this.posRow, this.posRow);

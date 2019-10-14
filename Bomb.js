@@ -42,12 +42,13 @@ Bomb.prototype.calcPosToExplode = function (grid, numRows, numColumns) {
         } else break;
     }
 }
-Bomb.prototype.behave = function (dt, grid, numRows, numColumns) {
+Bomb.prototype.behave = function (dt, grid, numRows, numColumns, asssetsManager) {
     if (!this.explosionComplete) {
         //placed the bomb and the explosion haven't occurred yet
         if (this.currentTick >= this.maxTick && !this.readyToExplode) {
             this.readyToExplode = true;
             this.frame = 0;
+            assetsManager.play("explosion");
             this.calcPosToExplode(grid, numRows, numColumns);
             for (var i = 0; i < this.positionsToExplode.length; i++) {
                 grid[this.positionsToExplode[i].row][this.positionsToExplode[i].column].layer = 6;

@@ -4,7 +4,10 @@ function AssetsManager() {
     this.images = {};
     this.audios = {};
     this.channels = [];
-    this.maxChannels = 5;
+    this.maxChannels = 25;
+    for (var i = 0; i < this.maxChannels; i++) {
+        this.channels[i] = { audio: new Audio(), fim: -1 };
+    }
 }
 AssetsManager.prototype.loadImage = function (key, url) {
     console.log(`Loading image ${url}...`);
@@ -18,7 +21,27 @@ AssetsManager.prototype.loadImage = function (key, url) {
         console.log(`Image ${that.loaded}/${that.toLoad} ${key}: ${url} loaded.`);
     });
 }
-
+AssetsManager.prototype.loadAudio = function (key, url) {
+    console.log(`Loading audio ${key}: ${url}...`);
+    var audio = new Audio();
+    audio.src = url;
+    audio.load();
+    this.audios[key] = audio;
+}
+AssetsManager.prototype.play = function (key) {
+    if (!this.audios[key]) {
+        throw new Error(`Invalid audio key: ${key}!`);
+    }
+    for (var i = 0; i < this.maxChannels; i++) {
+        var now = new Date();
+        if (this.channels[i].fim < now.getTime()) {
+            this.channels[i].audio.src = this.audios[key].src;
+            this.channels[i].end = now.getTime() + this.audios[key].duration * 1000;
+            this.channels[i].audio.play();
+            break;
+        }
+    }
+}
 AssetsManager.prototype.img = function (key) {
     return this.images[key];
 }
