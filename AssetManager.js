@@ -21,13 +21,6 @@ AssetsManager.prototype.loadImage = function (key, url) {
         console.log(`Image ${that.loaded}/${that.toLoad} ${key}: ${url} loaded.`);
     });
 }
-AssetsManager.prototype.loadAudio = function (key, url) {
-    console.log(`Loading audio ${key}: ${url}...`);
-    var audio = new Audio();
-    audio.src = url;
-    audio.load();
-    this.audios[key] = audio;
-}
 AssetsManager.prototype.play = function (key) {
     if (!this.audios[key]) {
         throw new Error(`Invalid audio key: ${key}!`);
