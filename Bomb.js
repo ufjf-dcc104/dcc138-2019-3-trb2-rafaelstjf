@@ -43,6 +43,7 @@ Bomb.prototype.calcPosToExplode = function (grid, numRows, numColumns) {
     }
 }
 Bomb.prototype.behave = function (dt, grid, numRows, numColumns, asssetsManager) {
+    this.frame += 6 * dt;
     if (!this.explosionComplete) {
         //placed the bomb and the explosion haven't occurred yet
         if (this.currentTick >= this.maxTick && !this.readyToExplode) {
@@ -56,7 +57,6 @@ Bomb.prototype.behave = function (dt, grid, numRows, numColumns, asssetsManager)
             this.currentTick = 0;
             this.color = "red";
         } else if (this.currentTick < this.maxTick && !this.readyToExplode) {
-            this.frame += 6 * dt;
             this.currentTick = this.currentTick + dt;
             if (grid[this.posRow][this.posColumn].layer == 0) //1 second to move
                 grid[this.posRow][this.posColumn].layer = 5;
@@ -95,7 +95,7 @@ Bomb.prototype.draw = function (ctx, grid, numRows, numColumns) {
         ctx.drawImage(
             assetsManager.images["bomb"],
             (F % 3) * 16,
-            Math.floor(F / 3) * 0,
+            0,
             16,
             16,
             grid[this.posRow][this.posColumn].x,

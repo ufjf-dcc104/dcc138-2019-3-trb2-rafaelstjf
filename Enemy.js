@@ -20,6 +20,8 @@ function Enemy(row0, column0) {
     this.strokeColor = "black";
     //others
     this.alive = true;
+    this.frame = 0;
+
 }
 
 Enemy.prototype.move = function (dt, numRows, numColumns, grid) {
@@ -100,6 +102,21 @@ Enemy.prototype.checkCollision = function (grid, numRows, numColumns) {
     }
 }
 Enemy.prototype.draw = function (ctposColumn, grid) {
-    ctposColumn.fillStyle = this.color;
-    ctposColumn.fillRect(this.x, this.y, this.w, this.h);
+    this.frame += 6 * dt;
+    var key = "enemy_1";
+    var F = Math.floor(this.frame);
+    if (this.movingDir == "down") {
+        ctx.drawImage(assetsManager.images[key], (F % 3) * 32, 0, 32, 32, this.x, this.y, this.w, this.h);
+    } else if (this.movingDir == "up") {
+        ctx.drawImage(assetsManager.images[key], (F % 3) * 32, 32, 32, 32, this.x, this.y, this.w, this.h);
+
+    } else if (this.movingDir == "left") {
+        ctx.drawImage(assetsManager.images[key], (F % 3) * 32, 64, 32, 32, this.x, this.y, this.w, this.h);
+
+    } else if (this.movingDir == "right") {
+        ctx.drawImage(assetsManager.images[key], (F % 3) * 32, 96, 32, 32, this.x, this.y, this.w, this.h);
+    } else {
+        ctposColumn.fillStyle = this.color;
+        ctposColumn.fillRect(this.x, this.y, this.w, this.h);
+    }
 }

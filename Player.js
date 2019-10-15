@@ -22,12 +22,25 @@ function Player(row0, column0) {
     this.maxBombs = 2;
     this.objectsThatCollide = [2, 3, 5];
     this.frame = 0;
+    this.walkSoundCD = 0;
+
 }
 
 Player.prototype.move = function (dt, numRows, numColumns, grid) {
     /*
        * Calculates the position on the grid based in the player's X and Y values
     */
+
+    //walking sound
+    if (this.vColumn != 0 || this.vRow != 0) {
+        if (this.walkSoundCD < 1.5) {
+            this.walkSoundCD = this.walkSoundCD + this.walkSoundCD * dt;
+        } else {
+            assetsManager.play("walk");
+            this.walkSoundCD = 1;
+        }
+    } else
+        this.walkSoundCD = 2;
     var r1 = (this.y + this.vRow) % 32;
     var r2 = (this.x + this.vColumn) % 32;
     var newPosRow;
@@ -96,6 +109,7 @@ Player.prototype.checkCollision = function (grid, numRows, numColumns) {
     if ((grid[this.posRow][this.posColumn].layer == 4 || grid[this.posRow][this.posColumn].layer == 6) && !this.immunity) {//enemy
         this.immunity = true;
         this.life--;
+        assetsManager.play("hit");
     }
 }
 Player.prototype.reset = function () {
@@ -130,11 +144,11 @@ Player.prototype.draw = function (ctx, dt) {
         ctx.drawImage(assetsManager.images[key], (F % 3) * 17, 34, 17, 17, this.x, this.y, this.w, this.h);
 
     } else if (this.movingDir == "left") {
-        ctx.drawImage(assetsManager.images[key], (F % 3) * 17, 51, 17, 17, this.x, this.y, -this.w, this.h);
+        ctx.drawImage(assetsManager.images[key], (F % 3) * 17, 51, 17, 17, this.x, this.y, this.w, this.h);
 
     } else if (this.movingDir == "right") {
         ctx.drawImage(assetsManager.images[key], (F % 3) * 17, 17, 17, 17, this.x, this.y, this.w, this.h);
     } else {
-        ctx.drawImage(assetsManager.images[key], 0, 0, 17, 17, this.x, this.y, this.w, this.h);
+        ctx.drawImage(assetsManager.images[key], (F % 3) * 17, 68, 17, 17, this.x, this.y, this.w, this.h);
     }
 }

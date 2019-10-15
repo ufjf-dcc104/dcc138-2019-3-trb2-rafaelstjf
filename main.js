@@ -20,9 +20,14 @@ assetsManager.loadImage("portrait", "Assets/Sprites/portrait.png");
 assetsManager.loadImage("player", "Assets/Sprites/player_tileset.png");
 assetsManager.loadImage("player_damaged", "Assets/Sprites/player_tileset2.png");
 assetsManager.loadImage("bomb", "Assets/Sprites/bomb.png");
+assetsManager.loadImage("enemy_1", "Assets/Sprites/enemy_1.png");
 assetsManager.loadImage("explosion", "Assets/Sprites/explosion.png");
 //load audios
-assetsManager.loadAudio("explosion", "Assets/Sounds/explosion.mp3");
+assetsManager.loadAudio("walk", "Assets/Sounds/walk.wav");
+assetsManager.loadAudio("background", "Assets/Sounds/background.mp3");
+assetsManager.loadAudio("hit", "Assets/Sounds/hit.wav");
+assetsManager.loadAudio("explosion", "Assets/Sounds/explosion.wav");
+assetsManager.loadAudio("spawn_bomb", "Assets/Sounds/spawn_bomb.wav");
 /*
 ------------Grid Codes----------------
 0 - Free
@@ -114,6 +119,8 @@ function drawGameOverScreen() {
     ctx.fillText("PRESS SPACE TO PLAY", canvas.width / 2, canvas.height / 2);
 }
 function drawHUD() {
+    // if(!assetsManager.checkIfIsPlaying("background"))
+    //     assetsManager.play("background");
     //draws HUD RECT
     ctx.fillStyle = "black";
     ctx.strokeStyle = "white";
@@ -201,6 +208,7 @@ addEventListener("keyup", function (e) {
             if (inGame) {
                 if (bombs.length < player.maxBombs) {
                     bombs.push(new Bomb(player.posRow, player.posColumn));
+                    assetsManager.play("spawn_bomb");
                 }
             } else {
                 player.reset();
