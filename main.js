@@ -110,7 +110,9 @@ for (var i = 0; i < numRows; i++) {
         grid[i][j] = coordinates;
     }
 }
-
+function deleteEnemies() {
+    enemies.splice(0, enemies.length);
+}
 //creates enemies
 function createEnemies() {
     maxEnemies = 1 * level
@@ -311,6 +313,7 @@ function loop(t) {
             level = 1;
             assetsManager.stopIfPlaying("background");
             bombs.splice(0, bombs.length);
+            deleteEnemies();
             buildStage();
             createEnemies();
         } else {
