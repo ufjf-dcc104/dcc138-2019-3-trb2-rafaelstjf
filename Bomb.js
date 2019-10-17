@@ -8,7 +8,7 @@ function Bomb(row0, column0) {
     this.color = "yellow";
     this.strokeColor = "black";
     this.maxTick = 3;
-    this.maxTickAE = 1;
+    this.maxTickAE = 0.5;
     this.currentTick = 0;
     this.readyToExplode = false;
     this.explosionComplete = false;

@@ -123,6 +123,7 @@ Player.prototype.reset = function () {
     this.life = 3;
     this.score = 0;
     this.maxBombs = 1;
+    this.immunity = false;
 }
 
 Player.prototype.draw = function (ctx, dt) {

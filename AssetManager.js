@@ -35,6 +35,23 @@ AssetsManager.prototype.play = function (key) {
         }
     }
 }
+AssetsManager.prototype.stopIfPlaying = function (key) {
+    if (!this.audios[key]) {
+        throw new Error(`Invalid audio key: ${key}!`);
+    }
+    for (var i = 0; i < this.maxChannels; i++) {
+        var now = new Date();
+        if (this.channels[i].audio.src == this.audios[key].src && this.channels[i].end > now.getTime()) {
+            this.channels[i].audio.pause();
+            this.channels[i].audio.src = "";
+            this.channels[i].audio.end = -1;
+            break;
+        }
+    }
+
+
+
+}
 AssetsManager.prototype.checkIfIsPlaying = function (key) {
     var playing = false;
     if (!this.audios[key]) {
