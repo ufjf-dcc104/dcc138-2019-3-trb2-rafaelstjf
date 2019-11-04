@@ -14,3 +14,6 @@ In this version there are some new features like sprites, animations and sounds.
 
 * The grid movimentation has a collision problem when the player is colliding agains the walls
 * When the player destroys all the enemies in a stage whe instantly goes to another stage instead of waiting some time in the level transition scene.
+
+
+**Important:** this repository is just for learning purposes.
