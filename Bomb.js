@@ -8,11 +8,12 @@ function Bomb(row0, column0) {
     this.color = "yellow";
     this.strokeColor = "black";
     this.maxTick = 3;
-    this.maxTickAE = 1;
+    this.maxTickAE = 0.5;
     this.currentTick = 0;
     this.readyToExplode = false;
     this.explosionComplete = false;
     this.positionsToExplode = [];
+    this.frame = 0;
 }
 Bomb.prototype.calcPosToExplode = function (grid, numRows, numColumns) {
     /*
@@ -41,11 +42,14 @@ Bomb.prototype.calcPosToExplode = function (grid, numRows, numColumns) {
         } else break;
     }
 }
-Bomb.prototype.behave = function (dt, grid, numRows, numColumns) {
+Bomb.prototype.behave = function (dt, grid, numRows, numColumns, asssetsManager) {
+    this.frame += 6 * dt;
     if (!this.explosionComplete) {
         //placed the bomb and the explosion haven't occurred yet
         if (this.currentTick >= this.maxTick && !this.readyToExplode) {
             this.readyToExplode = true;
+            this.frame = 0;
+            assetsManager.play("explosion");
             this.calcPosToExplode(grid, numRows, numColumns);
             for (var i = 0; i < this.positionsToExplode.length; i++) {
                 grid[this.positionsToExplode[i].row][this.positionsToExplode[i].column].layer = 6;
@@ -72,12 +76,33 @@ Bomb.prototype.behave = function (dt, grid, numRows, numColumns) {
 }
 Bomb.prototype.draw = function (ctx, grid, numRows, numColumns) {
 
-    ctx.fillStyle = this.color;
-    ctx.fillRect(grid[this.posRow][this.posColumn].x, grid[this.posRow][this.posColumn].y, this.w, this.h);
+    var F = Math.floor(this.frame);
     if (this.readyToExplode) {
         for (var i = 0; i < this.positionsToExplode.length; i++) {
-            ctx.fillRect(grid[this.positionsToExplode[i].row][this.positionsToExplode[i].column].x, grid[this.positionsToExplode[i].row][this.positionsToExplode[i].column].y, this.w, this.h);
+            ctx.drawImage(
+                assetsManager.images["explosion"],
+                (F % 27) * 35,
+                0,
+                35,
+                43,
+                grid[this.positionsToExplode[i].row][this.positionsToExplode[i].column].x,
+                grid[this.positionsToExplode[i].row][this.positionsToExplode[i].column].y,
+                this.w,
+                this.h
+            );
         }
+    } else {
+        ctx.drawImage(
+            assetsManager.images["bomb"],
+            (F % 3) * 16,
+            0,
+            16,
+            16,
+            grid[this.posRow][this.posColumn].x,
+            grid[this.posRow][this.posColumn].y,
+            this.w,
+            this.h
+        );
     }
     /*
     ctx.save();
