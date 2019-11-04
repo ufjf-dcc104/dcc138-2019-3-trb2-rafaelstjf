@@ -115,7 +115,7 @@ function deleteEnemies() {
 }
 //creates enemies
 function createEnemies() {
-    maxEnemies = 1 * level
+    maxEnemies = 3 * level
     for (var i = 0; i < maxEnemies; i++) {
         var posRow = parseInt(Math.random() * numRows);
         var posCol = parseInt(Math.random() * numColumns);
