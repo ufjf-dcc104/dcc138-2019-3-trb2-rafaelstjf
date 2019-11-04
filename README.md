@@ -8,7 +8,7 @@ First Version: [here](https://github.com/ufjf-dcc104/dcc138-2019-1-trb1-rafaelst
 
 ## Features
 
-In this version there are some new features like sprites, animations and sounds. There is also 2 new stages.
+In this version there are some new features like sprites, animations and sounds. There are also 2 new stages.
 
 ## Known bugs
 
