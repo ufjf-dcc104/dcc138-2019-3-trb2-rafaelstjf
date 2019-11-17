@@ -61,58 +61,10 @@ var stage0 = [[2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2],
 [2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2],
 [2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2],
 [2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2]];
-// var stage1 = [[2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2],
-// [2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2],
-// [2, 0, 0, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 0, 0, 0, 2],
-// [2, 0, 0, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 0, 0, 0, 2],
-// [2, 0, 0, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 0, 0, 0, 2],
-// [2, 0, 0, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 0, 0, 0, 2],
-// [2, 0, 0, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 0, 0, 0, 2],
-// [2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2],
-// [2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2],
-// [2, 0, 0, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 0, 0, 0, 2],
-// [2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2],
-// [2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2],
-// [2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2],
-// [2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2],
-// [2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2]];
-// var stage2 = [[2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2],
-// [2, 0, 0, 0, 0, 0, 0, 0, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2],
-// [2, 0, 0, 0, 0, 0, 0, 0, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2],
-// [2, 0, 2, 0, 0, 0, 0, 0, 3, 0, 0, 0, 0, 0, 0, 2, 2, 2, 2, 2],
-// [2, 0, 2, 0, 0, 0, 0, 0, 3, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 2],
-// [2, 0, 2, 0, 0, 0, 0, 0, 3, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 2],
-// [2, 0, 2, 0, 0, 0, 0, 0, 3, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 2],
-// [2, 0, 2, 0, 0, 0, 0, 0, 3, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 2],
-// [2, 0, 2, 0, 0, 0, 0, 0, 3, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 2],
-// [2, 0, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 0, 2, 0, 0, 0, 2],
-// [2, 0, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2],
-// [2, 0, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2],
-// [2, 0, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2],
-// [2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2],
-// [2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2]];
-// var stage3 = [[2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2],
-// [2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2],
-// [2, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2],
-// [2, 0, 2, 0, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 0, 2],
-// [2, 0, 2, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 2],
-// [2, 0, 2, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 2, 0, 2],
-// [2, 0, 2, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 2, 0, 2],
-// [2, 0, 2, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 2, 0, 2],
-// [2, 0, 2, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 2, 0, 2],
-// [2, 0, 2, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 2, 0, 2],
-// [2, 0, 2, 0, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 0, 2, 0, 2],
-// [2, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 2],
-// [2, 0, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 0, 2],
-// [2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2],
-// [2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2]];
 
-// stages.push(stage0);
-// stages.push(stage2);
-// stages.push(stage3);
-
-
-
+/*
+    * Generates a terrain using markov in the whole matrix except in the borders
+*/
 function generateTerrain() {
     var transitionMatrix = [[0.5, 0, 0.3, 0.2],
     [1, 0, 0, 0],
@@ -139,7 +91,7 @@ function generateTerrain() {
                 it = false;
             } else {
                 r = Math.random()
-                s =transitionMatrix[old][0];
+                s = transitionMatrix[old][0];
                 k = 0;
                 while (s < r) {
                     k++;
@@ -155,9 +107,106 @@ function generateTerrain() {
         for (var j = 1; j < numColumns - 1; j++) {
             output += String(stage0[i][j]) + "\t";
         }
-        output+= "\n";
+        output += "\n";
     }
     console.log(output);
+}
+/*
+    * Generates a terrain using markov chains in submatrices of reduced size
+*/
+function generateTerrain2() {
+    var usedNumbers = [];
+    var size = 3
+    for (var a = 0; a < 10; a++) {
+        var valid = false;
+        var rLine;
+        var rColumn;
+        rLine = Math.floor(Math.random() * (12 - size)) + 1;
+        rColumn = Math.floor(Math.random() * (17 - size)) + 1;
+        while (!valid) {
+            if (usedNumbers.length > 0) {
+                var can = true;
+                for (var usedIndex = 0; usedIndex < usedNumbers.length; usedIndex++) {
+                    if (rLine == usedNumbers[usedIndex].line && rColumn == usedNumbers[usedIndex].column) {
+                        rLine = Math.floor(Math.random() * (12 - size)) + 1;
+                        rColumn = Math.floor(Math.random() * (17 - size)) + 1;
+                        can = false;
+                    }
+                    if ((rLine > usedNumbers[usedIndex].line && rLine < usedNumbers[usedIndex].line + size)) {
+                        rLine = Math.floor(Math.random() * (12 - size)) + 1;
+                        can = false;
+                        break;
+                    } if ((rLine + size > usedNumbers[usedIndex].line && rLine + size < usedNumbers[usedIndex].line + size)) {
+                        rLine = Math.floor(Math.random() * (12 - size)) + 1;
+                        can = false;
+                        break;
+                    }
+                    if ((rColumn > usedNumbers[usedIndex].column && rColumn < usedNumbers[usedIndex].column + size)) {
+                        rColumn = Math.floor(Math.random() * (17 - size)) + 1;
+                        can = false
+                        break;
+                    } if ((rColumn + size > usedNumbers[usedIndex].column && rColumn + size < usedNumbers[usedIndex].column + size)) {
+                        rColumn = Math.floor(Math.random() * (17 - size)) + 1;
+                        can = false;
+                        break;
+                    }
+                }
+                if (can) {
+
+                    usedNumbers.push({
+                        line: rLine,
+                        column: rColumn
+                    });
+                    valid = true;
+                }
+            } else {
+                valid = true;
+                usedNumbers.push({
+                    line: rLine,
+                    column: rColumn
+                });
+            }
+        }
+        console.log(rLine + " " + rColumn);
+        console.log("Used Numbers size: " + usedNumbers.length);
+
+        var transitionMatrix = [[0.5, 0, 0.3, 0.2],
+        [1, 0, 0, 0],
+        [0.3, 0, 0.4, 0.3],
+        [0.3, 0, 0.5, 0.3]];
+        var initialVector = [1, 0, 0, 0]
+        var it = true;
+        var old = 0;
+        var r;
+        var s;
+        var k;
+        for (var i = rLine; i < rLine + size; i++) {
+            for (var j = rColumn; j < rColumn + size; j++) {
+                if (it) {
+                    r = Math.random()
+                    s = initialVector[0];
+                    k = 0;
+                    while (s < r) {
+                        k++;
+                        s += initialVector[k];
+                    }
+                    stage0[i][j] = k;
+                    old = k
+                    it = false;
+                } else {
+                    r = Math.random()
+                    s = transitionMatrix[old][0];
+                    k = 0;
+                    while (s < r) {
+                        k++;
+                        s = s + transitionMatrix[old][k];
+                    }
+                    stage0[i][j] = k;
+                    old = k;
+                }
+            }
+        }
+    }
 }
 //creates the grid structure
 for (var i = 0; i < numRows; i++) {
@@ -210,7 +259,7 @@ function drawGrid() {
     }
 }
 function buildStage() {//set the layers based on a matrix
-    generateTerrain();
+    generateTerrain2();
     for (var i = 0; i < numRows; i++) {
         for (var j = 0; j < numColumns; j++) {
             grid[i][j].layer = stage0[i][j];
