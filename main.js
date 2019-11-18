@@ -117,7 +117,7 @@ function generateTerrain() {
 function generateTerrain3() {
     var it = true;
     var old = 0;
-    var r;
+    var r = 0;
     var s;
     var k;
     var i = 1;
@@ -136,7 +136,8 @@ function generateTerrain3() {
                     stage0[a][b] = patterns[k][a - i][b - j];
                 }
             }
-            old = k
+            old = k;
+            j = j + patternSize;
             it = false;
         } else {
             r = Math.random()
@@ -156,9 +157,9 @@ function generateTerrain3() {
             j = j + patternSize;
             old = k;
         }
-        if (j >= numColumns - 1){
+        if (j >= numColumns - 1) {
             j = 1;
-            i+=patternSize;
+            i += patternSize;
 
         }
     }
