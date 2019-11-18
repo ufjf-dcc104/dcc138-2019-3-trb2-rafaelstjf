@@ -63,7 +63,7 @@ var stage0 = [[2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2],
 [2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2]];
 
 /*
-    * Generates a terrain using markov in the whole matrix except in the borders
+    * Generates a terrain using markov chain in the whole matrix except in the borders
 */
 function generateTerrain() {
     var transitionMatrix = [[0.5, 0, 0.3, 0.2],
@@ -100,6 +100,66 @@ function generateTerrain() {
                 stage0[i][j] = k;
                 old = k;
             }
+        }
+    }
+    var output
+    for (var i = 1; i < numRows - 1; i++) {
+        for (var j = 1; j < numColumns - 1; j++) {
+            output += String(stage0[i][j]) + "\t";
+        }
+        output += "\n";
+    }
+    console.log(output);
+}
+/*
+    * Generates a terrain using markov chain to use patterns
+*/
+function generateTerrain3() {
+    var it = true;
+    var old = 0;
+    var r;
+    var s;
+    var k;
+    var i = 1;
+    var j = 1;
+    while (i < numRows - 1) {
+        if (it) {
+            r = Math.random()
+            s = patternInitVector[0];
+            k = 0;
+            while (s < r) {
+                k++;
+                s += patternInitVector[k];
+            }
+            for (var a = i; a < i + patternSize; a++) {
+                for (var b = j; b < j + patternSize; b++) {
+                    stage0[a][b] = patterns[k][a - i][b - j];
+                }
+            }
+            old = k
+            it = false;
+        } else {
+            r = Math.random()
+            s = patternTransition[old][0];
+            k = 0;
+            while (s < r) {
+                k++;
+                s = s + patternTransition[old][k];
+            }
+            for (var a = i; a < i + patternSize; a++) {
+                for (var b = j; b < j + patternSize; b++) {
+                    if (a >= numRows - 1 || b >= numColumns - 1)
+                        break;
+                    stage0[a][b] = patterns[k][a - i][b - j];
+                }
+            }
+            j = j + patternSize;
+            old = k;
+        }
+        if (j >= numColumns - 1){
+            j = 1;
+            i+=patternSize;
+
         }
     }
     var output
@@ -259,7 +319,7 @@ function drawGrid() {
     }
 }
 function buildStage() {//set the layers based on a matrix
-    generateTerrain2();
+    generateTerrain3();
     for (var i = 0; i < numRows; i++) {
         for (var j = 0; j < numColumns; j++) {
             grid[i][j].layer = stage0[i][j];
