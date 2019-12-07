@@ -10,7 +10,7 @@ var pattern2 = [[2, 0, 0, 2],
 [0, 0, 0, 0],
 [2, 2, 2, 2]];
 
-var pattern3  = [[2, 0, 0, 2],
+var pattern3 = [[2, 0, 0, 2],
 [0, 0, 0, 0],
 [0, 0, 0, 0],
 [2, 0, 0, 2]];
@@ -38,6 +38,13 @@ var patternTransition = [[0.25, 0, 0.25, 0.25, 0.25, 0],
 [0.15, 0.15, 0.2, 0.2, 0.2, 0.2],
 [0, 0, 0, 0.3, 0.3, 0.4]];
 
-var patternInitVector = [0,0,0,0.3, 0.3, 0.4];
+var patternTransitionUpDown = [[0, 0, 0, 0, 0, 1],
+[0, 0, 0, 0, 0, 1],
+[0, 0.4, 0.3, 0.1, 0, 0.2],
+[0, 0, 0, 0, 0.5, 0.5],
+[0, 0.4, 0, 0.2, 0.2, 0.2],
+[0, 0.25, 0.25, 0, 0.25, 0.25]];
 
-var patterns = [pattern1, pattern2, pattern3, pattern4, pattern5, pattern6 ];
+var patternInitVector = [0, 0, 0, 0.3, 0.3, 0.4];
+
+var patterns = [pattern1, pattern2, pattern3, pattern4, pattern5, pattern6];

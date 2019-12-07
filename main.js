@@ -62,9 +62,6 @@ var stage0 = [[2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2],
 [2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2],
 [2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2]];
 
-/*
-    * Generates a terrain using markov chain in the whole matrix except in the borders
-*/
 function generateTerrain() {
     var transitionMatrix = [[0.5, 0, 0.3, 0.2],
     [1, 0, 0, 0],
@@ -111,15 +108,19 @@ function generateTerrain() {
     }
     console.log(output);
 }
+
 /*
     * Generates a terrain using markov chain to use patterns
 */
-function generateTerrain3() {
+function markovTerrainGeneration() {
     var it = true;
     var old = 0;
     var r = 0;
     var s;
     var k;
+    var oldChoices = [];
+    var choices = [];
+    var el = 0;
     var i = 1;
     var j = 1;
     while (i < numRows - 1) {
@@ -136,6 +137,8 @@ function generateTerrain3() {
                     stage0[a][b] = patterns[k][a - i][b - j];
                 }
             }
+            choices.push(k);
+            el++;
             old = k;
             j = j + patternSize;
             it = false;
@@ -147,6 +150,17 @@ function generateTerrain3() {
                 k++;
                 s = s + patternTransition[old][k];
             }
+            if (oldChoices.length > 0) {
+                var newK = 0;
+                while (patternTransitionUpDown[oldChoices[el]][k] == 0) {
+                    if (patternTransition[old][newK] > 0 && patternTransitionUpDown[oldChoices[el]][newK] > 0) {
+                        k = newK;
+                    } else newK++;
+                    if (newK > patternTransitionUpDown[oldChoices[el]].length) {
+                        break;
+                    }
+                }
+            }
             for (var a = i; a < i + patternSize; a++) {
                 for (var b = j; b < j + patternSize; b++) {
                     if (a >= numRows - 1 || b >= numColumns - 1)
@@ -156,14 +170,19 @@ function generateTerrain3() {
             }
             j = j + patternSize;
             old = k;
+            choices.push(k);
+            el++;
         }
         if (j >= numColumns - 1) {
             j = 1;
             i += patternSize;
+            oldChoices = choices;
+            choices = [];
+            el = 0;
 
         }
     }
-    var output
+    var output;
     for (var i = 1; i < numRows - 1; i++) {
         for (var j = 1; j < numColumns - 1; j++) {
             output += String(stage0[i][j]) + "\t";
@@ -171,103 +190,6 @@ function generateTerrain3() {
         output += "\n";
     }
     console.log(output);
-}
-/*
-    * Generates a terrain using markov chains in submatrices of reduced size
-*/
-function generateTerrain2() {
-    var usedNumbers = [];
-    var size = 3
-    for (var a = 0; a < 10; a++) {
-        var valid = false;
-        var rLine;
-        var rColumn;
-        rLine = Math.floor(Math.random() * (12 - size)) + 1;
-        rColumn = Math.floor(Math.random() * (17 - size)) + 1;
-        while (!valid) {
-            if (usedNumbers.length > 0) {
-                var can = true;
-                for (var usedIndex = 0; usedIndex < usedNumbers.length; usedIndex++) {
-                    if (rLine == usedNumbers[usedIndex].line && rColumn == usedNumbers[usedIndex].column) {
-                        rLine = Math.floor(Math.random() * (12 - size)) + 1;
-                        rColumn = Math.floor(Math.random() * (17 - size)) + 1;
-                        can = false;
-                    }
-                    if ((rLine > usedNumbers[usedIndex].line && rLine < usedNumbers[usedIndex].line + size)) {
-                        rLine = Math.floor(Math.random() * (12 - size)) + 1;
-                        can = false;
-                        break;
-                    } if ((rLine + size > usedNumbers[usedIndex].line && rLine + size < usedNumbers[usedIndex].line + size)) {
-                        rLine = Math.floor(Math.random() * (12 - size)) + 1;
-                        can = false;
-                        break;
-                    }
-                    if ((rColumn > usedNumbers[usedIndex].column && rColumn < usedNumbers[usedIndex].column + size)) {
-                        rColumn = Math.floor(Math.random() * (17 - size)) + 1;
-                        can = false
-                        break;
-                    } if ((rColumn + size > usedNumbers[usedIndex].column && rColumn + size < usedNumbers[usedIndex].column + size)) {
-                        rColumn = Math.floor(Math.random() * (17 - size)) + 1;
-                        can = false;
-                        break;
-                    }
-                }
-                if (can) {
-
-                    usedNumbers.push({
-                        line: rLine,
-                        column: rColumn
-                    });
-                    valid = true;
-                }
-            } else {
-                valid = true;
-                usedNumbers.push({
-                    line: rLine,
-                    column: rColumn
-                });
-            }
-        }
-        console.log(rLine + " " + rColumn);
-        console.log("Used Numbers size: " + usedNumbers.length);
-
-        var transitionMatrix = [[0.5, 0, 0.3, 0.2],
-        [1, 0, 0, 0],
-        [0.3, 0, 0.4, 0.3],
-        [0.3, 0, 0.5, 0.3]];
-        var initialVector = [1, 0, 0, 0]
-        var it = true;
-        var old = 0;
-        var r;
-        var s;
-        var k;
-        for (var i = rLine; i < rLine + size; i++) {
-            for (var j = rColumn; j < rColumn + size; j++) {
-                if (it) {
-                    r = Math.random()
-                    s = initialVector[0];
-                    k = 0;
-                    while (s < r) {
-                        k++;
-                        s += initialVector[k];
-                    }
-                    stage0[i][j] = k;
-                    old = k
-                    it = false;
-                } else {
-                    r = Math.random()
-                    s = transitionMatrix[old][0];
-                    k = 0;
-                    while (s < r) {
-                        k++;
-                        s = s + transitionMatrix[old][k];
-                    }
-                    stage0[i][j] = k;
-                    old = k;
-                }
-            }
-        }
-    }
 }
 //creates the grid structure
 for (var i = 0; i < numRows; i++) {
@@ -320,7 +242,7 @@ function drawGrid() {
     }
 }
 function buildStage() {//set the layers based on a matrix
-    generateTerrain3();
+    markovTerrainGeneration();
     for (var i = 0; i < numRows; i++) {
         for (var j = 0; j < numColumns; j++) {
             grid[i][j].layer = stage0[i][j];
